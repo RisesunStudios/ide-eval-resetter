@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Scanner;
+import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
 
 public class ResetAction extends AnAction {
@@ -73,6 +74,13 @@ public class ResetAction extends AnAction {
         prefs.remove(NEW_MACHINE_ID_KEY);
         prefs.remove(DEVICE_ID_KEY);
 
+        try {
+            removeEvalNode(prefs);
+        } catch (BackingStoreException e) {
+            NotificationHelper.showError(project, "Remove evlsprt failed!");
+            return;
+        }
+
         Preferences.userRoot().node(Constants.PLUGIN_NAME).put(Constants.PRODUCT_NAME + Constants.PRODUCT_HASH, Long.toString(System.currentTimeMillis()));
 
         if (appInfo.isVendorJetBrains() && SystemInfo.isWindows) {
@@ -117,5 +125,22 @@ public class ResetAction extends AnAction {
         String configPath = PathManager.getConfigPath();
 
         return new File(new File(configPath, "options"), "other.xml");
+    }
+
+    protected void removeEvalNode(Preferences prefs) throws BackingStoreException {
+        String[] keys = prefs.childrenNames();
+        if (keys.length == 0) {
+            return;
+        }
+
+        for (String key : keys) {
+            Preferences node = prefs.node(key);
+            if (key.startsWith("evlsprt")) {
+                node.removeNode();
+                continue;
+            }
+
+            removeEvalNode(node);
+        }
     }
 }

@@ -4,7 +4,7 @@ plugins {
 }
 
 group 'io.zhile.research.intellij'
-version '1.0.4'
+version '1.0.5'
 
 repositories {
     mavenCentral()
@@ -19,12 +19,14 @@ intellij {
 //    localPath "${System.properties['user.home']}/Applications/IntelliJ IDEA.app"
 //    alternativeIdePath localPath
 
-    version "2020.1.2"
+    version "2020.2.3"
     type "IU"
 }
 
 patchPluginXml {
     changeNotes """
+    release v1.0.5
+      1. update for 2020.2.x
     release v1.0.4
       1. reset completely
     release v1.0.3

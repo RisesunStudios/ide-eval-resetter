@@ -1,4 +1,4 @@
-' reset jetbrains ide evals v1.0.4
+' reset jetbrains ide evals v1.0.5
 Set oShell = CreateObject("WScript.Shell")
 Set oFS = CreateObject("Scripting.FileSystemObject")
 sHomeFolder = oShell.ExpandEnvironmentStrings("%USERPROFILE%")
@@ -53,6 +53,7 @@ On Error Resume Next
 oShell.RegDelete "HKEY_CURRENT_USER\Software\JavaSoft\Prefs\/Jet/Brains./User/Id/On/Machine"
 oShell.RegDelete "HKEY_CURRENT_USER\Software\JavaSoft\Prefs\jetbrains\device_id"
 oShell.RegDelete "HKEY_CURRENT_USER\Software\JavaSoft\Prefs\jetbrains\user_id_on_machine"
+oShell.RegDelete "HKEY_CURRENT_USER\Software\JavaSoft\Prefs\jetbrains\"
 oFs.DeleteFile sJBDataFolder + "\bl"
 oFs.DeleteFile sJBDataFolder + "\crl"
 oFs.DeleteFile sJBDataFolder + "\PermanentUserId"

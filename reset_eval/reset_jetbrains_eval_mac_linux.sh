@@ -1,5 +1,5 @@
 #!/bin/bash
-# reset jetbrains ide evals v1.0.4
+# reset jetbrains ide evals v1.0.5
 
 OS_NAME=$(uname -s)
 JB_PRODUCTS="IntelliJIdea CLion PhpStorm GoLand PyCharm WebStorm Rider DataGrip RubyMine AppCode"

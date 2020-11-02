@@ -1,10 +1,13 @@
 plugins {
     id 'java'
-    id 'org.jetbrains.intellij' version '0.4.21'
+    id 'org.jetbrains.intellij' version '0.5.0'
 }
 
 group 'io.zhile.research.intellij'
-version '1.0.5'
+version '2.0.0'
+
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
 
 repositories {
     mavenCentral()
@@ -14,17 +17,21 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }
 
+buildPlugin {
+    buildSearchableOptions.enabled = false
+}
+
 // See https://github.com/JetBrains/gradle-intellij-plugin/
 intellij {
-//    localPath "${System.properties['user.home']}/Applications/IntelliJ IDEA.app"
-//    alternativeIdePath localPath
-
     version "2020.2.3"
     type "IU"
 }
 
 patchPluginXml {
     changeNotes """
+    release v2.0.0
+      1. add ui
+      2. more stable and accurate
     release v1.0.5
       1. update for 2020.2.x
     release v1.0.4
@@ -34,6 +41,6 @@ patchPluginXml {
     release v1.0.2
       1. compatibility fix"""
 
-    sinceBuild "162"
+    sinceBuild "145.258"
     untilBuild null
 }

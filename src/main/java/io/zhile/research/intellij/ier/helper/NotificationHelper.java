@@ -1,4 +1,4 @@
-package io.zhile.research.intellij.helper;
+package io.zhile.research.intellij.ier.helper;
 
 import com.intellij.icons.AllIcons;
 import com.intellij.notification.Notification;

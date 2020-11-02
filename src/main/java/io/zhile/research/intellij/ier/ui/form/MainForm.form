@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="io.zhile.research.intellij.ier.ui.form.MainForm">
+  <grid id="27dc6" binding="rootPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
+    <constraints>
+      <xy x="20" y="20" width="500" height="400"/>
+    </constraints>
+    <properties/>
+    <border type="none"/>
+    <children>
+      <grid id="c0103" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="0">
+        <constraints border-constraint="North"/>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <component id="aeaef" class="javax.swing.JLabel" binding="lblLastResetTimeLabel">
+            <constraints/>
+            <properties>
+              <text value="Last Reset Time："/>
+            </properties>
+          </component>
+          <component id="782c3" class="javax.swing.JLabel" binding="lblLastResetTime">
+            <constraints/>
+            <properties>
+              <text value=""/>
+            </properties>
+          </component>
+        </children>
+      </grid>
+      <grid id="f8be5" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="2">
+        <constraints border-constraint="South"/>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <component id="382d3" class="javax.swing.JButton" binding="btnReloadList">
+            <constraints/>
+            <properties>
+              <text value="⟳ Reload List"/>
+            </properties>
+          </component>
+          <component id="7f8d9" class="javax.swing.JButton" binding="btnReset">
+            <constraints/>
+            <properties>
+              <text value="Reset"/>
+            </properties>
+          </component>
+        </children>
+      </grid>
+      <grid id="60ebc" layout-manager="BorderLayout" hgap="0" vgap="0">
+        <constraints border-constraint="Center"/>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <grid id="c9bb0" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="0">
+            <constraints border-constraint="North"/>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <component id="e7c88" class="javax.swing.JLabel" binding="lblFound">
+                <constraints/>
+                <properties>
+                  <text value="Found："/>
+                </properties>
+              </component>
+            </children>
+          </grid>
+          <grid id="7c492" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+            <margin top="5" left="5" bottom="5" right="5"/>
+            <constraints border-constraint="Center"/>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <scrollpane id="1f2f8">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties/>
+                <border type="empty"/>
+                <children>
+                  <component id="5b0c2" class="javax.swing.JList" binding="lstMain">
+                    <constraints/>
+                    <properties>
+                      <selectionMode value="0"/>
+                    </properties>
+                  </component>
+                </children>
+              </scrollpane>
+            </children>
+          </grid>
+        </children>
+      </grid>
+    </children>
+  </grid>
+</form>

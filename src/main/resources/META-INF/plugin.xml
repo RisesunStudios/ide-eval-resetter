@@ -1,24 +1,30 @@
 <idea-plugin>
     <id>io.zhile.research.ide-eval-resetter</id>
-    <name>ide-eval-resetter</name>
+    <name>IDE Eval Reset</name>
     <vendor url="https://zhile.io">zhile.io</vendor>
 
     <description><![CDATA[
     I can reset your IDE eval information.<br>
-    <em>Click "Help" menu and select "Reset IDE Eval"</em>
+    <em>Click "Help" menu and select "Eval Reset"</em>
     ]]></description>
 
-    <depends>com.intellij.modules.lang</depends>
+    <depends>com.intellij.modules.ultimate</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <toolWindow id="Eval Reset" anchor="bottom" icon="AllIcons.General.Reset"
+                    factoryClass="io.zhile.research.intellij.ier.tw.MainToolWindowFactory"/>
+    </extensions>
 
     <actions>
-        <action class="io.zhile.research.intellij.action.ResetAction" id="io.zhile.research.intellij.action.ResetAction">
+        <action class="io.zhile.research.intellij.ier.action.ResetAction"
+                id="io.zhile.research.intellij.ier.action.ResetAction">
             <add-to-group group-id="HelpMenu" anchor="last"/>
             <add-to-group group-id="WelcomeScreen.Documentation" anchor="last"/>
         </action>
     </actions>
-    <application-components>
-        <component>
-            <implementation-class>io.zhile.research.intellij.MainComponent</implementation-class>
-        </component>
-    </application-components>
+
+    <applicationListeners>
+        <listener class="io.zhile.research.intellij.ier.listener.PluginListener"
+                  topic="com.intellij.ide.plugins.DynamicPluginListener"/>
+    </applicationListeners>
 </idea-plugin>

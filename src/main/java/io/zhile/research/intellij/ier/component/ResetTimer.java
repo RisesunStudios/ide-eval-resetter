@@ -25,12 +25,13 @@ public class ResetTimer {
 
     public static void resetLastResetTime() {
         Prefs.putLong(RESET_KEY, System.currentTimeMillis());
+        Resetter.syncPrefs();
     }
 
     public static String getLastResetTimeStr() {
         long lastResetTime = getLastResetTime();
 
-        return lastResetTime > 0 ? DateTime.getStringFromTimestamp(lastResetTime) : "not yet";
+        return lastResetTime > 0 ? DateTime.getStringFromTimestamp(lastResetTime) : "Not yet";
     }
 
     public void start(final AnAction resetAction) {

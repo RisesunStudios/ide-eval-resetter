@@ -4,7 +4,7 @@ plugins {
 }
 
 group 'io.zhile.research.intellij'
-version '2.0.1'
+version '2.0.2'
 
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
@@ -29,6 +29,8 @@ intellij {
 
 patchPluginXml {
     changeNotes """<pre>
+Release v2.0.2
+  1. sync prefs manually
 Release v2.0.1
   1. add option: Reset Automatically
 Release v2.0.0

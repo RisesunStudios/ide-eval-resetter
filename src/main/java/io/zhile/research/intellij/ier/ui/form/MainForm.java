@@ -19,9 +19,10 @@ public class MainForm {
     private JButton btnReset;
     private JList lstMain;
     private JLabel lblLastResetTime;
-    private JButton btnReloadList;
+    private JButton btnReload;
     private JLabel lblFound;
     private JLabel lblLastResetTimeLabel;
+    private JCheckBox chkResetAuto;
 
     private final DialogWrapper dialogWrapper;
     private final DefaultListModel<String> listModel = new DefaultListModel<>();
@@ -33,14 +34,23 @@ public class MainForm {
     public JPanel getContent() {
         boldFont(lblFound);
         boldFont(lblLastResetTimeLabel);
+        reloadLastResetTime();
 
-        lblLastResetTime.setText(ResetTimer.getLastResetTimeStr());
-        lstMain.setModel(listModel);
-
-        reloadRecordItems();
-        btnReloadList.addActionListener(new AbstractAction() {
+        chkResetAuto.setSelected(Resetter.isAutoReset());
+        chkResetAuto.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                Resetter.setAutoReset(chkResetAuto.isSelected());
+            }
+        });
+
+        lstMain.setModel(listModel);
+        reloadRecordItems();
+
+        btnReload.addActionListener(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                reloadLastResetTime();
                 reloadRecordItems();
             }
         });
@@ -59,6 +69,10 @@ public class MainForm {
 
         rootPanel.setMinimumSize(new Dimension(600, 240));
         return rootPanel;
+    }
+
+    private void reloadLastResetTime() {
+        lblLastResetTime.setText(ResetTimer.getLastResetTimeStr());
     }
 
     private void reloadRecordItems() {

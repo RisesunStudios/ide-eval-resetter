@@ -4,6 +4,10 @@ import com.intellij.ide.Prefs;
 import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationType;
 import com.intellij.openapi.actionSystem.AnAction;
+import com.intellij.openapi.project.Project;
+import com.intellij.openapi.project.ProjectManager;
+import io.zhile.research.intellij.ier.action.RestartAction;
+import io.zhile.research.intellij.ier.common.Resetter;
 import io.zhile.research.intellij.ier.helper.Constants;
 import io.zhile.research.intellij.ier.helper.DateTime;
 import io.zhile.research.intellij.ier.helper.NotificationHelper;
@@ -13,7 +17,7 @@ import java.util.TimerTask;
 
 public class ResetTimer {
     private static final long RESET_PERIOD = 2160000000L; // 25 days
-    private static final String RESET_KEY = "Ide-Eval-Reset." + Constants.IDE_NAME_LOWER + "." + Constants.IDE_HASH;
+    private static final String RESET_KEY = Constants.PLUGIN_PREFS_PREFIX + "." + Constants.IDE_NAME_LOWER + "." + Constants.IDE_HASH;
 
     public static long getLastResetTime() {
         return Prefs.getLong(RESET_KEY, 0L);
@@ -49,12 +53,34 @@ public class ResetTimer {
 
         @Override
         public void run() {
-            if (System.currentTimeMillis() - lastResetTime > RESET_PERIOD) {
+            do {
+                if (System.currentTimeMillis() - lastResetTime <= RESET_PERIOD) {
+                    break;
+                }
+
+                AnAction action = resetAction;
                 String message = "It has been a long time since the last reset!\nWould you like to reset it again?";
+
+                if (Resetter.isAutoReset()) {
+                    Resetter.reset(Resetter.getEvalRecords());
+                    ResetTimer.resetLastResetTime();
+
+                    action = new RestartAction();
+                    message = "Automatic reset successfully!\nWould like to restart your IDE?";
+                }
+
                 Notification notification = NotificationHelper.NOTIFICATION_GROUP.createNotification(Constants.PLUGIN_NAME, null, message, NotificationType.INFORMATION);
-                notification.addAction(resetAction);
-                notification.notify(null);
-            }
+                notification.addAction(action);
+
+                Project[] projects = ProjectManager.getInstance().getOpenProjects();
+                if (projects.length == 0) {
+                    notification.notify(null);
+                } else {
+                    for (Project project : projects) {
+                        notification.notify(project);
+                    }
+                }
+            } while (false);
 
             new Timer().schedule(new ResetTimerTask(lastResetTime, resetAction), 3600000); // 60 min
         }

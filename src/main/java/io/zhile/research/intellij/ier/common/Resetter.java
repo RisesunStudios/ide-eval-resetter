@@ -29,6 +29,7 @@ public class Resetter {
     private static final String DEVICE_ID_KEY = DEFAULT_VENDOR + ".device_id";
     private static final String IDE_EVAL_PREFIX = DEFAULT_VENDOR + "/" + Constants.IDE_NAME_LOWER + "/" + Constants.IDE_HASH;
     private static final String EVAL_KEY = "evlsprt";
+    private static final String AUTO_RESET_KEY = Constants.PLUGIN_PREFS_PREFIX + ".auto_reset";
 
     private static final PropertiesComponentImpl PROPS = (PropertiesComponentImpl) PropertiesComponent.getInstance();
 
@@ -149,6 +150,14 @@ public class Resetter {
                 PROPS.unsetValue(key);
                 break;
         }
+    }
+
+    public static boolean isAutoReset() {
+        return Prefs.getBoolean(AUTO_RESET_KEY, false);
+    }
+
+    public static void setAutoReset(boolean isAutoReset) {
+        Prefs.putBoolean(AUTO_RESET_KEY, isAutoReset);
     }
 
     protected static File getSharedFile(String fileName) {

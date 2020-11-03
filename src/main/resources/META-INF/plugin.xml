@@ -10,11 +10,6 @@
 
     <depends>com.intellij.modules.ultimate</depends>
 
-    <extensions defaultExtensionNs="com.intellij">
-        <toolWindow id="Eval Reset" anchor="bottom" icon="AllIcons.General.Reset"
-                    factoryClass="io.zhile.research.intellij.ier.tw.MainToolWindowFactory"/>
-    </extensions>
-
     <actions>
         <action class="io.zhile.research.intellij.ier.action.ResetAction"
                 id="io.zhile.research.intellij.ier.action.ResetAction">

@@ -4,7 +4,7 @@ plugins {
 }
 
 group 'io.zhile.research.intellij'
-version '2.0.0'
+version '2.0.1'
 
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
@@ -28,18 +28,21 @@ intellij {
 }
 
 patchPluginXml {
-    changeNotes """
-    release v2.0.0
-      1. add ui
-      2. more stable and accurate
-    release v1.0.5
-      1. update for 2020.2.x
-    release v1.0.4
-      1. reset completely
-    release v1.0.3
-      1. bug fix
-    release v1.0.2
-      1. compatibility fix"""
+    changeNotes """<pre>
+Release v2.0.1
+  1. add option: Reset Automatically
+Release v2.0.0
+  1. add ui
+  2. more stable and accurate
+Release v1.0.5
+  1. update for 2020.2.x
+Release v1.0.4
+  1. reset completely
+Release v1.0.3
+  1. bug fix
+Release v1.0.2
+  1. compatibility fix
+</pre>"""
 
     sinceBuild "145.258"
     untilBuild null

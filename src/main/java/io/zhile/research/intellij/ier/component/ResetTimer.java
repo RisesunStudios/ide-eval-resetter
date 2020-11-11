@@ -12,6 +12,7 @@ import io.zhile.research.intellij.ier.helper.Constants;
 import io.zhile.research.intellij.ier.helper.DateTime;
 import io.zhile.research.intellij.ier.helper.NotificationHelper;
 
+import java.util.Arrays;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -77,13 +78,11 @@ public class ResetTimer {
                 if (projects.length == 0) {
                     notification.notify(null);
                 } else {
-                    for (Project project : projects) {
-                        notification.notify(project);
-                    }
+                    Arrays.stream(projects).forEach(notification::notify);
                 }
             } while (false);
 
-            new Timer().schedule(new ResetTimerTask(lastResetTime, resetAction), 3600000); // 60 min
+            new Timer().schedule(new ResetTimerTask(lastResetTime, resetAction), 600000); // 10 min
         }
     }
 }

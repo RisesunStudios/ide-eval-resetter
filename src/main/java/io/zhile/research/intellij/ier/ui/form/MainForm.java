@@ -4,7 +4,7 @@ import com.intellij.icons.AllIcons;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.openapi.ui.Messages;
-import io.zhile.research.intellij.ier.common.RecordItem;
+import io.zhile.research.intellij.ier.common.EvalRecord;
 import io.zhile.research.intellij.ier.common.Resetter;
 import io.zhile.research.intellij.ier.component.ResetTimer;
 import io.zhile.research.intellij.ier.helper.Constants;
@@ -79,33 +79,24 @@ public class MainForm {
     private void reloadRecordItems() {
         listModel.clear();
 
-        List<RecordItem> recordItemList = Resetter.getEvalRecords();
-        for (RecordItem item : recordItemList) {
-            listModel.addElement(item.getType().getValue() + ": \t" + item.getKey() + (null == item.getValue() ? "" : " = \t" + item.getValue()));
-        }
+        List<EvalRecord> recordItemList = Resetter.getEvalRecords();
+        recordItemList.forEach(record -> listModel.addElement(record.toString()));
     }
 
     private void resetEvalItems() {
+        if (Messages.YES != Messages.showYesNoDialog("Your IDE will restart after reset!\nAre your sure to reset?", Constants.PLUGIN_NAME, AllIcons.General.Reset)) {
+            return;
+        }
+
         Resetter.reset(Resetter.getEvalRecords());
         ResetTimer.resetLastResetTime();
         listModel.clear();
 
-        if (Messages.YES == Messages.showYesNoDialog("Reset successfully!\nWould like to restart your IDE?", Constants.PLUGIN_NAME, AllIcons.General.Reset)) {
-            if (null != dialogWrapper) {
-                dialogWrapper.close(0);
-            }
-
-            ApplicationManager.getApplication().invokeLater(new Runnable() {
-                @Override
-                public void run() {
-                    ApplicationManager.getApplication().restart();
-                }
-            });
-
-            return;
+        if (null != dialogWrapper) {
+            dialogWrapper.close(0);
         }
 
-        reloadRecordItems();
+        ApplicationManager.getApplication().invokeLater(() -> ApplicationManager.getApplication().restart());
     }
 
     private static void boldFont(Component component) {

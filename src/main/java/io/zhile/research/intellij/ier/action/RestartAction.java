@@ -14,6 +14,6 @@ public class RestartAction extends AnAction implements DumbAware {
 
     @Override
     public void actionPerformed(@NotNull AnActionEvent e) {
-        ApplicationManager.getApplication().restart();
+        ApplicationManager.getApplication().invokeLater(() -> ApplicationManager.getApplication().restart());
     }
 }

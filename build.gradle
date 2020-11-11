@@ -4,10 +4,10 @@ plugins {
 }
 
 group 'io.zhile.research.intellij'
-version '2.0.3'
+version '2.0.4'
 
-sourceCompatibility = 1.7
-targetCompatibility = 1.7
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 repositories {
     mavenCentral()
@@ -29,6 +29,9 @@ intellij {
 
 patchPluginXml {
     changeNotes """<pre>
+Release v2.0.4
+  1. fix plugins reset
+  2. reset more gracefully
 Release v2.0.3
   1. more friendly "Reload" icon
 Release v2.0.2

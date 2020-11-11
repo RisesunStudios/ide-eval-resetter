@@ -5,11 +5,11 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class DateTime {
-    public static final DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    public static final DateFormat DF_DATETIME = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     public static String getStringFromTimestamp(long timestamp) {
         Date date = new Date(timestamp);
 
-        return df.format(date);
+        return DF_DATETIME.format(date);
     }
 }

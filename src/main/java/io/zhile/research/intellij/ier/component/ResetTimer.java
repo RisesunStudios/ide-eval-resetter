@@ -1,9 +1,11 @@
 package io.zhile.research.intellij.ier.component;
 
+import com.intellij.ide.AppLifecycleListener;
 import com.intellij.ide.Prefs;
 import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationType;
 import com.intellij.openapi.actionSystem.AnAction;
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManager;
 import io.zhile.research.intellij.ier.action.RestartAction;
@@ -11,6 +13,7 @@ import io.zhile.research.intellij.ier.common.Resetter;
 import io.zhile.research.intellij.ier.helper.Constants;
 import io.zhile.research.intellij.ier.helper.DateTime;
 import io.zhile.research.intellij.ier.helper.NotificationHelper;
+import io.zhile.research.intellij.ier.listener.AppEventListener;
 
 import java.util.Arrays;
 import java.util.Timer;
@@ -36,6 +39,8 @@ public class ResetTimer {
     }
 
     public void start(final AnAction resetAction) {
+        ApplicationManager.getApplication().getMessageBus().connect().subscribe(AppLifecycleListener.TOPIC, new AppEventListener());
+
         new Timer().schedule(new TimerTask() {
             @Override
             public void run() {
@@ -60,17 +65,8 @@ public class ResetTimer {
                     break;
                 }
 
-                AnAction action = resetAction;
+                AnAction action = Resetter.isAutoReset() ? new RestartAction() : resetAction;
                 String message = "It has been a long time since the last reset!\nWould you like to reset it again?";
-
-                if (Resetter.isAutoReset()) {
-                    Resetter.reset(Resetter.getEvalRecords());
-                    ResetTimer.resetLastResetTime();
-
-                    action = new RestartAction();
-                    message = "Automatic reset successfully!\nWould like to restart your IDE?";
-                }
-
                 Notification notification = NotificationHelper.NOTIFICATION_GROUP.createNotification(Constants.PLUGIN_NAME, null, message, NotificationType.INFORMATION);
                 notification.addAction(action);
 

@@ -34,7 +34,7 @@
           <component id="3e8db" class="javax.swing.JCheckBox" binding="chkResetAuto">
             <constraints/>
             <properties>
-              <text value="Reset Automatically (per 25 days)"/>
+              <text value="Auto reset before per restart"/>
             </properties>
           </component>
           <component id="382d3" class="javax.swing.JButton" binding="btnReload">

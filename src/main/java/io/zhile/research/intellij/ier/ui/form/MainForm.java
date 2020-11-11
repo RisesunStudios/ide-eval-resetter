@@ -8,6 +8,7 @@ import io.zhile.research.intellij.ier.common.EvalRecord;
 import io.zhile.research.intellij.ier.common.Resetter;
 import io.zhile.research.intellij.ier.component.ResetTimer;
 import io.zhile.research.intellij.ier.helper.Constants;
+import io.zhile.research.intellij.ier.listener.AppEventListener;
 
 import javax.swing.*;
 import java.awt.*;
@@ -96,6 +97,7 @@ public class MainForm {
             dialogWrapper.close(0);
         }
 
+        AppEventListener.disable();
         ApplicationManager.getApplication().invokeLater(() -> ApplicationManager.getApplication().restart());
     }
 

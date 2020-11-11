@@ -1,6 +1,6 @@
 # Reset Your IDE Eval Information
 
-1. Download and install plugin from [Release Page](https://gitee.com/pengzhile/ide-eval-resetter/attach_files/517894/download/ide-eval-resetter-2.0.4.zip).
+1. Download and install plugin from [Release Page](https://gitee.com/pengzhile/ide-eval-resetter/attach_files/517945/download/ide-eval-resetter-2.1.0.zip).
 2. Click `Help` or `Get Help` -> `Eval Reset` menu.
 3. Click `Reset` -> `Yes` button.
 4. Restart your IDE.

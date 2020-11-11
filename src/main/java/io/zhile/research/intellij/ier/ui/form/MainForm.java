@@ -47,6 +47,7 @@ public class MainForm {
         lstMain.setModel(listModel);
         reloadRecordItems();
 
+        btnReload.setIcon(AllIcons.Actions.Refresh);
         btnReload.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {

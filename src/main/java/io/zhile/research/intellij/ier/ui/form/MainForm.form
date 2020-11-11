@@ -40,7 +40,7 @@
           <component id="382d3" class="javax.swing.JButton" binding="btnReload">
             <constraints/>
             <properties>
-              <text value="⟳ Reload"/>
+              <text value="Reload"/>
             </properties>
           </component>
           <component id="7f8d9" class="javax.swing.JButton" binding="btnReset">

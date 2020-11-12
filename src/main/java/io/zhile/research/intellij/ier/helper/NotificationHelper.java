@@ -9,11 +9,11 @@ import com.intellij.openapi.project.Project;
 import org.jetbrains.annotations.Nullable;
 
 public class NotificationHelper {
-    public static final NotificationGroup NOTIFICATION_GROUP = new NotificationGroup(Constants.PLUGIN_ID.getIdString(), NotificationDisplayType.BALLOON, true, null, AllIcons.General.Reset);
+    public static final NotificationGroup NOTIFICATION_GROUP = new NotificationGroup(Constants.PLUGIN_ID_STR, NotificationDisplayType.BALLOON, true, null, AllIcons.General.Reset);
 
     public static Notification show(@Nullable Project project, String title, String subtitle, String content, NotificationType type) {
         if (title == null) {
-            title = Constants.PLUGIN_NAME;
+            title = PluginHelper.getPluginName();
         }
 
         Notification notification = NOTIFICATION_GROUP.createNotification(title, subtitle, content, type);

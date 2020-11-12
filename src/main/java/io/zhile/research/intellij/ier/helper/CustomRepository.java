@@ -17,7 +17,7 @@ public class CustomRepository {
 
         hosts.add(host);
 
-        Method method = Reflection.getMethod(UpdateSettings.class, "setThirdPartyPluginsAllowed", boolean.class);
+        Method method = ReflectionHelper.getMethod(UpdateSettings.class, "setThirdPartyPluginsAllowed", boolean.class);
         if (method != null) {
             try {
                 method.invoke(UpdateSettings.getInstance(), true);

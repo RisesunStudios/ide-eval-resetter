@@ -7,7 +7,7 @@ import com.intellij.openapi.ui.Messages;
 import io.zhile.research.intellij.ier.common.EvalRecord;
 import io.zhile.research.intellij.ier.common.Resetter;
 import io.zhile.research.intellij.ier.component.ResetTimer;
-import io.zhile.research.intellij.ier.helper.Constants;
+import io.zhile.research.intellij.ier.helper.PluginHelper;
 import io.zhile.research.intellij.ier.listener.AppEventListener;
 
 import javax.swing.*;
@@ -38,7 +38,7 @@ public class MainForm {
         boldFont(lblLastResetTimeLabel);
         reloadLastResetTime();
 
-        lblVersion.setText("v" + Constants.PLUGIN_VERSION);
+        lblVersion.setText("v" + PluginHelper.getPluginVersion());
 
         chkResetAuto.setSelected(Resetter.isAutoReset());
         chkResetAuto.addActionListener(new AbstractAction() {
@@ -88,7 +88,7 @@ public class MainForm {
     }
 
     private void resetEvalItems() {
-        if (Messages.YES != Messages.showYesNoDialog("Your IDE will restart after reset!\nAre your sure to reset?", Constants.PLUGIN_NAME, AllIcons.General.Reset)) {
+        if (Messages.YES != Messages.showYesNoDialog("Your IDE will restart after reset!\nAre your sure to reset?", PluginHelper.getPluginName(), AllIcons.General.Reset)) {
             return;
         }
 

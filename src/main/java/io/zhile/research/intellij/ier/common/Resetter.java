@@ -7,7 +7,7 @@ import com.intellij.openapi.application.PathManager;
 import com.intellij.openapi.util.SystemInfo;
 import io.zhile.research.intellij.ier.helper.Constants;
 import io.zhile.research.intellij.ier.helper.NotificationHelper;
-import io.zhile.research.intellij.ier.helper.Reflection;
+import io.zhile.research.intellij.ier.helper.ReflectionHelper;
 import org.jdom.Element;
 
 import java.io.File;
@@ -67,7 +67,7 @@ public class Resetter {
             List<String> prefsList = new ArrayList<>();
             getAllPrefsKeys(Preferences.userRoot().node(IDE_EVAL_PREFIX), prefsList);
 
-            Method methodGetProductCode = Reflection.getMethod(IdeaPluginDescriptor.class, "getProductCode");
+            Method methodGetProductCode = ReflectionHelper.getMethod(IdeaPluginDescriptor.class, "getProductCode");
             if (null != methodGetProductCode) {
                 for (IdeaPluginDescriptor descriptor : PluginManager.getPlugins()) {
                     String productCode = (String) methodGetProductCode.invoke(descriptor);

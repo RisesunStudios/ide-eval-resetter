@@ -6,10 +6,10 @@ import io.zhile.research.intellij.ier.ui.form.MainForm;
 import javax.swing.*;
 
 public class MainDialog extends DialogWrapper {
-    public MainDialog() {
+    public MainDialog(String title) {
         super(true);
         init();
-        setTitle("Eval Reset");
+        setTitle(title);
     }
 
 

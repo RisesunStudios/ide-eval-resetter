@@ -24,6 +24,7 @@ public class MainForm {
     private JLabel lblFound;
     private JLabel lblLastResetTimeLabel;
     private JCheckBox chkResetAuto;
+    private JLabel lblVersion;
 
     private final DialogWrapper dialogWrapper;
     private final DefaultListModel<String> listModel = new DefaultListModel<>();
@@ -36,6 +37,8 @@ public class MainForm {
         boldFont(lblFound);
         boldFont(lblLastResetTimeLabel);
         reloadLastResetTime();
+
+        lblVersion.setText("v" + Constants.PLUGIN_VERSION);
 
         chkResetAuto.setSelected(Resetter.isAutoReset());
         chkResetAuto.addActionListener(new AbstractAction() {

@@ -41,7 +41,7 @@ public class ResetAction extends AnAction implements DumbAware {
         }
 
         if (project == null) {
-            MainDialog mainDialog = new MainDialog();
+            MainDialog mainDialog = new MainDialog(ACTION_NAME);
             mainDialog.show();
 
             return;

@@ -26,31 +26,6 @@
           </component>
         </children>
       </grid>
-      <grid id="f8be5" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="2">
-        <constraints border-constraint="South"/>
-        <properties/>
-        <border type="none"/>
-        <children>
-          <component id="3e8db" class="javax.swing.JCheckBox" binding="chkResetAuto">
-            <constraints/>
-            <properties>
-              <text value="Auto reset before per restart"/>
-            </properties>
-          </component>
-          <component id="382d3" class="javax.swing.JButton" binding="btnReload">
-            <constraints/>
-            <properties>
-              <text value="Reload"/>
-            </properties>
-          </component>
-          <component id="7f8d9" class="javax.swing.JButton" binding="btnReset">
-            <constraints/>
-            <properties>
-              <text value="Reset"/>
-            </properties>
-          </component>
-        </children>
-      </grid>
       <grid id="60ebc" layout-manager="BorderLayout" hgap="0" vgap="0">
         <constraints border-constraint="Center"/>
         <properties/>
@@ -90,6 +65,54 @@
                   </component>
                 </children>
               </scrollpane>
+            </children>
+          </grid>
+        </children>
+      </grid>
+      <grid id="e427f" layout-manager="BorderLayout" hgap="0" vgap="0">
+        <constraints border-constraint="South"/>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <grid id="f8be5" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="2">
+            <constraints border-constraint="Center"/>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <component id="3e8db" class="javax.swing.JCheckBox" binding="chkResetAuto">
+                <constraints/>
+                <properties>
+                  <text value="Auto reset before per restart"/>
+                </properties>
+              </component>
+              <component id="382d3" class="javax.swing.JButton" binding="btnReload">
+                <constraints/>
+                <properties>
+                  <text value="Reload"/>
+                </properties>
+              </component>
+              <component id="7f8d9" class="javax.swing.JButton" binding="btnReset">
+                <constraints/>
+                <properties>
+                  <text value="Reset"/>
+                </properties>
+              </component>
+            </children>
+          </grid>
+          <grid id="ee6d2" layout-manager="BorderLayout" hgap="0" vgap="0">
+            <constraints border-constraint="West"/>
+            <properties/>
+            <border type="empty">
+              <size top="0" left="5" bottom="0" right="5"/>
+            </border>
+            <children>
+              <component id="fbfed" class="javax.swing.JLabel" binding="lblVersion">
+                <constraints border-constraint="Center"/>
+                <properties>
+                  <enabled value="false"/>
+                  <text value="v1.0.0"/>
+                </properties>
+              </component>
             </children>
           </grid>
         </children>

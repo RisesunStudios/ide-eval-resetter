@@ -4,7 +4,7 @@ plugins {
 }
 
 group 'io.zhile.research.intellij'
-version '2.1.1'
+version '2.1.2'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -29,6 +29,8 @@ intellij {
 
 patchPluginXml {
     changeNotes """<pre>
+Release v2.1.2
+  1. fix third party plugins switch
 Release v2.1.1
   1. add ide plugin marketplace mechanism
 Release v2.1.0

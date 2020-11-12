@@ -3,6 +3,7 @@ package io.zhile.research.intellij.ier.helper;
 import com.intellij.openapi.updateSettings.impl.UpdateSettings;
 import org.jetbrains.annotations.NotNull;
 
+import java.lang.reflect.Method;
 import java.util.List;
 
 public class CustomRepository {
@@ -15,5 +16,14 @@ public class CustomRepository {
         }
 
         hosts.add(host);
+
+        Method method = Reflection.getMethod(UpdateSettings.class, "setThirdPartyPluginsAllowed", boolean.class);
+        if (method != null) {
+            try {
+                method.invoke(UpdateSettings.getInstance(), true);
+            } catch (Exception e) {
+                NotificationHelper.showError(null, "Enable third party plugins failed!");
+            }
+        }
     }
 }

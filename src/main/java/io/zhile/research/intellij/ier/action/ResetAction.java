@@ -14,6 +14,7 @@ import com.intellij.openapi.wm.ToolWindowManager;
 import com.intellij.openapi.wm.ex.ToolWindowManagerEx;
 import io.zhile.research.intellij.ier.component.ResetTimer;
 import io.zhile.research.intellij.ier.helper.Constants;
+import io.zhile.research.intellij.ier.helper.CustomRepository;
 import io.zhile.research.intellij.ier.helper.ProjectHelper;
 import io.zhile.research.intellij.ier.tw.MainToolWindowFactory;
 import io.zhile.research.intellij.ier.ui.dialog.MainDialog;
@@ -26,6 +27,8 @@ public class ResetAction extends AnAction implements DumbAware {
     public ResetAction() {
         super(ACTION_NAME, "Reset my IDE eval information", AllIcons.General.Reset);
         new ResetTimer().start(this);
+
+        CustomRepository.checkAndAdd(CustomRepository.DEFAULT_HOST);
     }
 
     @Override

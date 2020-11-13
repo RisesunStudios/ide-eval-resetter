@@ -8,13 +8,13 @@ import com.intellij.openapi.util.SystemInfo;
 import io.zhile.research.intellij.ier.helper.Constants;
 import io.zhile.research.intellij.ier.helper.NotificationHelper;
 import io.zhile.research.intellij.ier.helper.ReflectionHelper;
+import org.jdom.Attribute;
 import org.jdom.Element;
 
 import java.io.File;
 import java.lang.reflect.Method;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
@@ -33,27 +33,40 @@ public class Resetter {
 
         File evalDir = getEvalDir();
         if (evalDir.exists()) {
-            File[] files = evalDir.listFiles((dir, name) -> name.endsWith(".key"));
+            File[] files = evalDir.listFiles();
             if (files == null) {
                 NotificationHelper.showError(null, "List eval license file failed!");
             } else {
-                Arrays.stream(files).forEach(file -> list.add(new LicenseFileRecord(file)));
+                for (File file : files) {
+                    if (!file.getName().endsWith(".key")) {
+                        continue;
+                    }
+
+                    list.add(new LicenseFileRecord(file));
+                }
             }
         }
 
         Element state = PropertyRecord.PROPS.getState();
         if (state != null) {
-            state.getChildren().stream().filter(element -> {
+            Attribute attrName, attrValue;
+            for (Element element : state.getChildren()) {
                 if (!element.getName().equals("property")) {
-                    return false;
+                    continue;
                 }
 
-                if (element.getAttribute("name") == null || element.getAttribute("value") == null) {
-                    return false;
+                attrName = element.getAttribute("name");
+                attrValue = element.getAttribute("value");
+                if (attrName == null || attrValue == null) {
+                    continue;
                 }
 
-                return element.getAttribute("name").getValue().startsWith(EVAL_KEY);
-            }).forEach(element -> list.add(new PropertyRecord(element.getAttribute("name").getValue())));
+                if (!attrName.getValue().startsWith(EVAL_KEY)) {
+                    continue;
+                }
+
+                list.add(new PropertyRecord(attrName.getValue()));
+            }
         }
 
         PreferenceRecord[] prefsValue = new PreferenceRecord[]{
@@ -61,7 +74,13 @@ public class Resetter {
                 new PreferenceRecord(NEW_MACHINE_ID_KEY),
                 new PreferenceRecord(DEVICE_ID_KEY),
         };
-        Arrays.stream(prefsValue).filter(record -> record.getValue() != null).forEach(list::add);
+        for (PreferenceRecord record : prefsValue) {
+            if (record.getValue() == null) {
+                continue;
+            }
+
+            list.add(record);
+        }
 
         try {
             List<String> prefsList = new ArrayList<>();
@@ -79,12 +98,16 @@ public class Resetter {
                 }
             }
 
-            prefsList.stream().filter(key -> key.contains(EVAL_KEY)).forEach(key -> {
+            for (String key : prefsList) {
+                if (!key.contains(EVAL_KEY)) {
+                    continue;
+                }
+
                 if (key.startsWith("/")) {
                     key = key.substring(1).replace('/', '.');
                 }
                 list.add(new PreferenceRecord(key));
-            });
+            }
         } catch (Exception e) {
             NotificationHelper.showError(null, "List eval preferences failed!");
         }
@@ -103,7 +126,9 @@ public class Resetter {
     }
 
     public static void reset(List<EvalRecord> records) {
-        records.forEach(Resetter::reset);
+        for (EvalRecord record : records) {
+            Resetter.reset(record);
+        }
     }
 
     public static void reset(EvalRecord record) {

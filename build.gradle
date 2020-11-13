@@ -4,10 +4,10 @@ plugins {
 }
 
 group 'io.zhile.research.intellij'
-version '2.1.4'
+version '2.1.5'
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
 
 repositories {
     mavenCentral()
@@ -29,6 +29,8 @@ intellij {
 
 patchPluginXml {
     changeNotes """<pre>
+Release v2.1.5
+  1. fix memory leak
 Release v2.1.4
   1. fix reference
 Release v2.1.3

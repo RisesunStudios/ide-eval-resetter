@@ -5,22 +5,26 @@ import com.intellij.ide.Prefs;
 import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationType;
 import com.intellij.openapi.actionSystem.AnAction;
+import com.intellij.openapi.application.ApplicationActivationListener;
 import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.util.concurrency.AppExecutorUtil;
+import com.intellij.openapi.wm.IdeFrame;
+import com.intellij.util.messages.MessageBusConnection;
+import io.zhile.research.intellij.ier.action.ResetAction;
 import io.zhile.research.intellij.ier.action.RestartAction;
 import io.zhile.research.intellij.ier.common.Resetter;
-import io.zhile.research.intellij.ier.helper.*;
+import io.zhile.research.intellij.ier.helper.Constants;
+import io.zhile.research.intellij.ier.helper.DateTime;
+import io.zhile.research.intellij.ier.helper.NotificationHelper;
+import io.zhile.research.intellij.ier.helper.PluginHelper;
 import io.zhile.research.intellij.ier.listener.AppEventListener;
 
 import java.lang.ref.WeakReference;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
 
 public class ResetTimer {
     private static final long RESET_PERIOD = 2160000000L; // 25 days
     private static final String RESET_KEY = Constants.PLUGIN_PREFS_PREFIX + "." + Constants.IDE_NAME_LOWER + "." + Constants.IDE_HASH;
 
-    private static ScheduledFuture<?> scheduledFuture;
+    private static MessageBusConnection connection;
 
     public static long getLastResetTime() {
         return Prefs.getLong(RESET_KEY, 0L);
@@ -37,39 +41,56 @@ public class ResetTimer {
         return lastResetTime > 0 ? DateTime.getStringFromTimestamp(lastResetTime) : "Not yet";
     }
 
-    public synchronized static void start(final WeakReference<AnAction> weakResetAction) {
-        if (scheduledFuture != null) {
+    public synchronized static void start(final WeakReference<ResetAction> weakResetAction) {
+        if (connection != null) {
             return;
         }
 
         ApplicationManager.getApplication().getMessageBus().connect().subscribe(AppLifecycleListener.TOPIC, new AppEventListener());
-        scheduledFuture = AppExecutorUtil.getAppScheduledExecutorService().scheduleWithFixedDelay(() -> {
-            if (System.currentTimeMillis() - getLastResetTime() <= RESET_PERIOD) {
-                return;
+
+        connection = ApplicationManager.getApplication().getMessageBus().connect();
+        connection.subscribe(ApplicationActivationListener.TOPIC, new ApplicationActivationListener() {
+            public void applicationActivated(IdeFrame ideFrame) {
+                if (System.currentTimeMillis() - getLastResetTime() <= RESET_PERIOD) {
+                    return;
+                }
+
+                stop();
+
+                AnAction resetAction = weakResetAction.get();
+                if (resetAction == null) {
+                    return;
+                }
+
+                AnAction action = resetAction;
+                NotificationType type = NotificationType.INFORMATION;
+                String message = "It has been a long time since the last reset!\nWould you like to reset it again?";
+                if (Resetter.isAutoReset()) {
+                    action = new RestartAction();
+                    type = NotificationType.WARNING;
+                }
+
+                Notification notification = NotificationHelper.NOTIFICATION_GROUP.createNotification(PluginHelper.getPluginName(), null, message, type);
+                notification.addAction(action);
+                notification.notify(null);
             }
 
-            stop();
-
-            AnAction resetAction = weakResetAction.get();
-            if (resetAction == null) {
-                return;
+            public void applicationDeactivated(IdeFrame ideFrame) {
+                applicationActivated(ideFrame);
             }
 
-            AnAction action = Resetter.isAutoReset() ? new RestartAction() : resetAction;
-            String message = "It has been a long time since the last reset!\nWould you like to reset it again?";
-            Notification notification = NotificationHelper.NOTIFICATION_GROUP.createNotification(PluginHelper.getPluginName(), null, message, NotificationType.INFORMATION);
-            notification.addAction(action);
+            public void delayedApplicationDeactivated(IdeFrame ideFrame) {
 
-            notification.notify(ProjectHelper.getCurrentProject());
-        }, 3, 600, TimeUnit.SECONDS);
+            }
+        });
     }
 
     public synchronized static void stop() {
-        if (scheduledFuture == null || scheduledFuture.isCancelled()) {
+        if (connection == null) {
             return;
         }
 
-        scheduledFuture.cancel(false);
-        scheduledFuture = null;
+        connection.disconnect();
+        connection = null;
     }
 }

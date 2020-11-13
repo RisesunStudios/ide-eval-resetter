@@ -16,7 +16,6 @@ import io.zhile.research.intellij.ier.component.ResetTimer;
 import io.zhile.research.intellij.ier.helper.Constants;
 import io.zhile.research.intellij.ier.helper.CustomRepository;
 import io.zhile.research.intellij.ier.helper.PluginHelper;
-import io.zhile.research.intellij.ier.helper.ProjectHelper;
 import io.zhile.research.intellij.ier.tw.MainToolWindowFactory;
 import io.zhile.research.intellij.ier.ui.dialog.MainDialog;
 import org.jetbrains.annotations.NotNull;
@@ -35,7 +34,7 @@ public class ResetAction extends AnAction implements DumbAware {
 
     @Override
     public void actionPerformed(@NotNull AnActionEvent e) {
-        Project project = ProjectHelper.getProject(e);
+        Project project = e.getProject();
 
         Notification notification = NOTIFICATION_KEY.getData(e.getDataContext());
         if (null != notification) {

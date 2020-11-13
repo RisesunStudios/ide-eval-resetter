@@ -84,7 +84,9 @@ public class MainForm {
         listModel.clear();
 
         List<EvalRecord> recordItemList = Resetter.getEvalRecords();
-        recordItemList.forEach(record -> listModel.addElement(record.toString()));
+        for (EvalRecord record : recordItemList) {
+            listModel.addElement(record.toString());
+        }
     }
 
     private void resetEvalItems() {
@@ -101,7 +103,12 @@ public class MainForm {
         }
 
         AppEventListener.disable();
-        ApplicationManager.getApplication().invokeLater(() -> ApplicationManager.getApplication().restart());
+        ApplicationManager.getApplication().invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                ApplicationManager.getApplication().restart();
+            }
+        });
     }
 
     private static void boldFont(Component component) {

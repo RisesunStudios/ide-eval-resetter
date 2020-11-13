@@ -11,8 +11,10 @@ public class CustomRepository {
 
     public static void checkAndAdd(@NotNull String host) {
         List<String> hosts = UpdateSettings.getInstance().getStoredPluginHosts();
-        if (hosts.stream().anyMatch(s -> s.equalsIgnoreCase(host))) {
-            return;
+        for (String s : hosts) {
+            if (s.equalsIgnoreCase(host)) {
+                return;
+            }
         }
 
         hosts.add(host);

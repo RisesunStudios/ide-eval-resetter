@@ -47,6 +47,22 @@ public class Resetter {
             }
         }
 
+        File licenseDir = getLicenseDir();
+        if (licenseDir.exists()) {
+            File[] files = licenseDir.listFiles();
+            if (files == null) {
+                NotificationHelper.showError(null, "List license file failed!");
+            } else {
+                for (File file : files) {
+                    if (!file.getName().endsWith(".key") && !file.getName().endsWith(".license")) {
+                        continue;
+                    }
+
+                    list.add(new NormalFileRecord(file));
+                }
+            }
+        }
+
         Element state = PropertyRecord.PROPS.getState();
         if (state != null) {
             Attribute attrName, attrValue;
@@ -169,6 +185,10 @@ public class Resetter {
         String configPath = PathManager.getConfigPath();
 
         return new File(configPath, "eval");
+    }
+
+    protected static File getLicenseDir() {
+        return new File(PathManager.getConfigPath());
     }
 
     protected static void getAllPrefsKeys(Preferences prefs, List<String> list) throws BackingStoreException {

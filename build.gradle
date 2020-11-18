@@ -4,7 +4,7 @@ plugins {
 }
 
 group 'io.zhile.research.intellij'
-version '2.1.5'
+version '2.1.6'
 
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
@@ -29,6 +29,8 @@ intellij {
 
 patchPluginXml {
     changeNotes """<pre>
+Release v2.1.6
+  1. fix the pop-up of license window
 Release v2.1.5
   1. fix memory leak
 Release v2.1.4

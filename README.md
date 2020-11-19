@@ -8,3 +8,4 @@
 3. Click `Reset` -> `Yes` button.
 4. Restart your IDE.
 5. Now you have another 30 days eval time :)
+6. For more information, visit [here](https://zhile.io/2020/11/19/jetbrains-eval-reset.html).

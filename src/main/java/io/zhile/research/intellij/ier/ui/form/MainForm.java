@@ -1,21 +1,23 @@
 package io.zhile.research.intellij.ier.ui.form;
 
 import com.intellij.icons.AllIcons;
-import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.Disposable;
 import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.openapi.ui.Messages;
+import com.intellij.openapi.util.Disposer;
 import io.zhile.research.intellij.ier.common.EvalRecord;
 import io.zhile.research.intellij.ier.common.Resetter;
-import io.zhile.research.intellij.ier.component.ResetTimer;
+import io.zhile.research.intellij.ier.helper.AppHelper;
 import io.zhile.research.intellij.ier.helper.PluginHelper;
-import io.zhile.research.intellij.ier.listener.AppEventListener;
+import io.zhile.research.intellij.ier.helper.ResetTimeHelper;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
 
-public class MainForm {
+public class MainForm implements Disposable {
     private JPanel rootPanel;
     private JButton btnReset;
     private JList lstMain;
@@ -31,6 +33,9 @@ public class MainForm {
 
     public MainForm(DialogWrapper dialogWrapper) {
         this.dialogWrapper = dialogWrapper;
+        if (dialogWrapper != null) {
+            Disposer.register(dialogWrapper.getDisposable(), this);
+        }
     }
 
     public JPanel getContent() {
@@ -77,7 +82,7 @@ public class MainForm {
     }
 
     private void reloadLastResetTime() {
-        lblLastResetTime.setText(ResetTimer.getLastResetTimeStr());
+        lblLastResetTime.setText(ResetTimeHelper.getLastResetTimeStr());
     }
 
     private void reloadRecordItems() {
@@ -95,24 +100,29 @@ public class MainForm {
         }
 
         Resetter.reset(Resetter.getEvalRecords());
-        ResetTimer.resetLastResetTime();
+        ResetTimeHelper.resetLastResetTime();
         listModel.clear();
 
         if (null != dialogWrapper) {
             dialogWrapper.close(0);
         }
 
-        AppEventListener.disable();
-        ApplicationManager.getApplication().invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                ApplicationManager.getApplication().restart();
-            }
-        });
+        AppHelper.restart();
     }
 
     private static void boldFont(Component component) {
         Font font = component.getFont();
         component.setFont(font.deriveFont(font.getStyle() | Font.BOLD));
+    }
+
+    @Override
+    public void dispose() {
+        for (AbstractButton button : new AbstractButton[]{chkResetAuto, btnReload, btnReset}) {
+            for (ActionListener listener : button.getActionListeners()) {
+                button.removeActionListener(listener);
+            }
+        }
+
+        rootPanel.removeAll();
     }
 }

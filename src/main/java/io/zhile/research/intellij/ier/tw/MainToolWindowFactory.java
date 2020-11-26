@@ -17,6 +17,7 @@ public class MainToolWindowFactory implements ToolWindowFactory, DumbAware {
     public void createToolWindowContent(@NotNull Project project, @NotNull ToolWindow toolWindow) {
         MainForm mainForm = new MainForm(null);
         Content content = ContentFactory.SERVICE.getInstance().createContent(mainForm.getContent(), "", true);
+        content.setDisposer(mainForm);
         toolWindow.getContentManager().addContent(content);
     }
 

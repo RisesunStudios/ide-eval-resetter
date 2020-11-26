@@ -3,6 +3,8 @@ package io.zhile.research.intellij.ier.common;
 import com.intellij.ide.Prefs;
 import com.intellij.ide.plugins.IdeaPluginDescriptor;
 import com.intellij.ide.plugins.PluginManager;
+import com.intellij.ide.util.PropertiesComponent;
+import com.intellij.ide.util.PropertiesComponentImpl;
 import com.intellij.openapi.application.PathManager;
 import com.intellij.openapi.util.SystemInfo;
 import io.zhile.research.intellij.ier.helper.Constants;
@@ -63,7 +65,7 @@ public class Resetter {
             }
         }
 
-        Element state = PropertyRecord.PROPS.getState();
+        Element state = ((PropertiesComponentImpl) PropertiesComponent.getInstance()).getState();
         if (state != null) {
             Attribute attrName, attrValue;
             for (Element element : state.getChildren()) {

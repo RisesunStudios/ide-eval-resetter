@@ -12,7 +12,6 @@ public class MainDialog extends DialogWrapper {
         setTitle(title);
     }
 
-
     @Override
     protected JComponent createCenterPanel() {
         MainForm mainForm = new MainForm(this);

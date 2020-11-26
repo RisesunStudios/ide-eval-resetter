@@ -11,4 +11,6 @@ public class Constants {
     public static final String IDE_NAME_LOWER = IDE_NAME.toLowerCase();
     public static final String IDE_HASH = Integer.toHexString(FileUtil.pathHashCode(PathManager.getHomePath()));
     public static final String PLUGIN_PREFS_PREFIX = "Ide-Eval-Reset";
+    public static final String RESET_ACTION_ID = "io.zhile.research.intellij.ier.action.ResetAction";
+    public static final String RESTART_ACTION_ID = "io.zhile.research.intellij.ier.action.RestartAction";
 }

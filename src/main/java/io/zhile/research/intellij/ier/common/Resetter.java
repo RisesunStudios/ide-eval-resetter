@@ -60,6 +60,10 @@ public class Resetter {
                         continue;
                     }
 
+                    if (file.length() > 0x400) {
+                        continue;
+                    }
+
                     list.add(new NormalFileRecord(file));
                 }
             }

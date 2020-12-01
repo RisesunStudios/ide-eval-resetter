@@ -4,7 +4,7 @@ plugins {
 }
 
 group 'io.zhile.research.intellij'
-version '2.1.7'
+version '2.1.8'
 
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
@@ -29,6 +29,8 @@ intellij {
 
 patchPluginXml {
     changeNotes """<pre>
+Release v2.1.8
+  1. fixed the issue of resetting market plugins for genuine users
 Release v2.1.7
   1. add help page link
 Release v2.1.6

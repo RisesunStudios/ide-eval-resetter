@@ -26,7 +26,6 @@ public class Resetter {
     private static final String OLD_MACHINE_ID_KEY = "JetBrains.UserIdOnMachine";
     private static final String NEW_MACHINE_ID_KEY = DEFAULT_VENDOR + ".user_id_on_machine";
     private static final String DEVICE_ID_KEY = DEFAULT_VENDOR + ".device_id";
-    private static final String IDE_EVAL_PREFIX = DEFAULT_VENDOR + "/" + Constants.IDE_NAME_LOWER + "/" + Constants.IDE_HASH;
     private static final String EVAL_KEY = "evlsprt";
     private static final String AUTO_RESET_KEY = Constants.PLUGIN_PREFS_PREFIX + ".auto_reset." + Constants.IDE_NAME_LOWER + "." + Constants.IDE_HASH;
 
@@ -106,7 +105,13 @@ public class Resetter {
 
         try {
             List<String> prefsList = new ArrayList<>();
-            getAllPrefsKeys(Preferences.userRoot().node(IDE_EVAL_PREFIX), prefsList);
+            for (String name:Preferences.userRoot().node(DEFAULT_VENDOR).childrenNames()) {
+                if (!name.toLowerCase().startsWith(Constants.IDE_NAME_LOWER)) {
+                    continue;
+                }
+
+                getAllPrefsKeys(Preferences.userRoot().node(DEFAULT_VENDOR + "/" + name + "/" + Constants.IDE_HASH), prefsList);
+            }
 
             Method methodGetProductCode = ReflectionHelper.getMethod(IdeaPluginDescriptor.class, "getProductCode");
             if (null != methodGetProductCode) {

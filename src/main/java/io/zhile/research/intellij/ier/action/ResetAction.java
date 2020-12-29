@@ -1,8 +1,10 @@
 package io.zhile.research.intellij.ier.action;
 
 import com.intellij.icons.AllIcons;
+import com.intellij.openapi.actionSystem.ActionManager;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
+import com.intellij.openapi.actionSystem.DefaultActionGroup;
 import com.intellij.openapi.project.DumbAware;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.wm.ToolWindow;
@@ -29,6 +31,11 @@ public class ResetAction extends AnAction implements DumbAware {
 
     public ResetAction() {
         super(Constants.ACTION_NAME, "Reset my IDE eval information", AllIcons.General.Reset);
+
+        AnAction optionsGroup = ActionManager.getInstance().getAction("WelcomeScreen.Options");
+        if ((optionsGroup instanceof DefaultActionGroup)) {
+            ((DefaultActionGroup) optionsGroup).add(this);
+        }
     }
 
     @Override

@@ -3,6 +3,8 @@ package io.zhile.research.intellij.ier.listener;
 import com.intellij.ide.plugins.DynamicPluginListener;
 import com.intellij.ide.plugins.IdeaPluginDescriptor;
 import com.intellij.openapi.actionSystem.ActionManager;
+import com.intellij.openapi.actionSystem.AnAction;
+import com.intellij.openapi.actionSystem.DefaultActionGroup;
 import com.intellij.openapi.util.Disposer;
 import io.zhile.research.intellij.ier.helper.Constants;
 import io.zhile.research.intellij.ier.helper.NotificationHelper;
@@ -25,6 +27,11 @@ public class PluginListener implements DynamicPluginListener {
     public void beforePluginUnload(@NotNull IdeaPluginDescriptor pluginDescriptor, boolean isUpdate) {
         if (!PluginHelper.myself(pluginDescriptor)) {
             return;
+        }
+
+        AnAction optionsGroup = ActionManager.getInstance().getAction("WelcomeScreen.Options");
+        if ((optionsGroup instanceof DefaultActionGroup)) {
+            ((DefaultActionGroup) optionsGroup).remove(ActionManager.getInstance().getAction(Constants.RESET_ACTION_ID));
         }
 
         Disposer.dispose(AppActivationListener.getInstance());

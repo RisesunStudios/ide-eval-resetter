@@ -105,7 +105,7 @@ public class Resetter {
 
         try {
             List<String> prefsList = new ArrayList<>();
-            for (String name:Preferences.userRoot().node(DEFAULT_VENDOR).childrenNames()) {
+            for (String name : Preferences.userRoot().node(DEFAULT_VENDOR).childrenNames()) {
                 if (!name.toLowerCase().startsWith(Constants.IDE_NAME_LOWER)) {
                     continue;
                 }

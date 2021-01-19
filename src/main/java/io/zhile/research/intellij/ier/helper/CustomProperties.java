@@ -13,9 +13,9 @@ import java.util.List;
 import java.util.Properties;
 
 public class CustomProperties {
-    public static void checkAndUpdate() throws Exception {
-        String key = "idea.ignore.disabled.plugins", value = "true";
-        System.setProperty(key, value);
+    public static void fix() throws Exception {
+        String key = "idea.ignore.disabled.plugins";
+        System.clearProperty(key);
 
         List<Path> paths = new ArrayList<>();
         paths.add(Paths.get(SystemProperties.getUserHome(), PathManager.PROPERTIES_FILE_NAME));
@@ -28,7 +28,7 @@ public class CustomProperties {
         for (Path path : paths) {
             File file = path.toFile();
             if (!file.exists()) {
-                new FileOutputStream(file).close();
+                continue;
             }
 
             Properties props = new Properties();
@@ -36,7 +36,12 @@ public class CustomProperties {
                 props.load(fis);
             }
 
-            props.setProperty(key, value);
+            props.remove(key);
+
+            if (props.isEmpty()) {
+                file.delete();
+                continue;
+            }
 
             try (FileOutputStream fos = new FileOutputStream(file)) {
                 props.store(fos, null);

@@ -34,6 +34,7 @@ public class PluginListener implements DynamicPluginListener {
             ((DefaultActionGroup) optionsGroup).remove(ActionManager.getInstance().getAction(Constants.RESET_ACTION_ID));
         }
 
+        Disposer.dispose(BrokenPluginsListener.getInstance());
         Disposer.dispose(AppActivationListener.getInstance());
         Disposer.dispose(AppEventListener.getInstance());
         MainToolWindowFactory.unregisterAll();

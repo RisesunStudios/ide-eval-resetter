@@ -15,18 +15,22 @@ import com.intellij.openapi.wm.ex.ToolWindowManagerEx;
 import io.zhile.research.intellij.ier.helper.*;
 import io.zhile.research.intellij.ier.listener.AppActivationListener;
 import io.zhile.research.intellij.ier.listener.AppEventListener;
+import io.zhile.research.intellij.ier.listener.BrokenPluginsListener;
 import io.zhile.research.intellij.ier.tw.MainToolWindowFactory;
 import io.zhile.research.intellij.ier.ui.dialog.MainDialog;
 import org.jetbrains.annotations.NotNull;
 
 public class ResetAction extends AnAction implements DumbAware {
     static {
+        BrokenPlugins.fix();
+        BrokenPluginsListener.getInstance().listen();
+
         AppEventListener.getInstance().listen();
         AppActivationListener.getInstance().listen();
         try {
-            CustomProperties.checkAndUpdate();
+            CustomProperties.fix();
         } catch (Exception e) {
-            NotificationHelper.showError(null, "Set broken plugins failed!");
+            //
         }
         CustomRepository.checkAndAdd(CustomRepository.DEFAULT_HOST);
     }

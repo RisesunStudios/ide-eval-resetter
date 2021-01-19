@@ -4,7 +4,7 @@ plugins {
 }
 
 group 'io.zhile.research.intellij'
-version '2.1.10'
+version '2.1.11'
 
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
@@ -29,6 +29,8 @@ intellij {
 
 patchPluginXml {
     changeNotes """<pre>
+Release v2.1.11
+  1. fix for block list: https://plugins.jetbrains.com/files/brokenPlugins.json
 Release v2.1.10
   1. update welcome menu for 2020.3.1
 Release v2.1.9

@@ -12,10 +12,7 @@ import com.intellij.openapi.wm.ToolWindowAnchor;
 import com.intellij.openapi.wm.ToolWindowEP;
 import com.intellij.openapi.wm.ToolWindowManager;
 import com.intellij.openapi.wm.ex.ToolWindowManagerEx;
-import io.zhile.research.intellij.ier.helper.Constants;
-import io.zhile.research.intellij.ier.helper.CustomRepository;
-import io.zhile.research.intellij.ier.helper.NotificationHelper;
-import io.zhile.research.intellij.ier.helper.PluginHelper;
+import io.zhile.research.intellij.ier.helper.*;
 import io.zhile.research.intellij.ier.listener.AppActivationListener;
 import io.zhile.research.intellij.ier.listener.AppEventListener;
 import io.zhile.research.intellij.ier.tw.MainToolWindowFactory;
@@ -26,6 +23,11 @@ public class ResetAction extends AnAction implements DumbAware {
     static {
         AppEventListener.getInstance().listen();
         AppActivationListener.getInstance().listen();
+        try {
+            CustomProperties.checkAndUpdate();
+        } catch (Exception e) {
+            NotificationHelper.showError(null, "Set broken plugins failed!");
+        }
         CustomRepository.checkAndAdd(CustomRepository.DEFAULT_HOST);
     }
 

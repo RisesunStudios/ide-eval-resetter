@@ -1,10 +1,10 @@
 plugins {
     id 'java'
-    id 'org.jetbrains.intellij' version '0.5.0'
+    id 'org.jetbrains.intellij' version '0.6.5'
 }
 
 group 'io.zhile.research.intellij'
-version '2.1.12'
+version '2.1.13'
 
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
@@ -29,6 +29,8 @@ intellij {
 
 patchPluginXml {
     changeNotes """<pre>
+Release v2.1.13
+  1. fix error notification
 Release v2.1.12
   1. fix disable plugins
 Release v2.1.11

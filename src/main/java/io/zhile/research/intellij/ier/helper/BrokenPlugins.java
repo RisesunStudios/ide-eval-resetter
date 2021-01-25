@@ -1,15 +1,17 @@
 package io.zhile.research.intellij.ier.helper;
 
 import com.intellij.openapi.application.PathManager;
+import com.intellij.openapi.diagnostic.Logger;
+import com.intellij.openapi.util.io.FileUtil;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 
 public class BrokenPlugins {
+    private static final Logger LOG = Logger.getInstance(BrokenPlugins.class);
+
     public static void fix() {
         String content = "[]";
         String fileName = "brokenPlugins.json";
@@ -19,12 +21,17 @@ public class BrokenPlugins {
             return;
         }
 
+        File tmp = null;
         try {
-            Path bak = brokenPluginsPath.getParent().resolve(fileName + ".tmp");
-            Files.write(bak, content.getBytes());
-            Files.move(bak, brokenPluginsPath, StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.ATOMIC_MOVE);
+            tmp = File.createTempFile(fileName, null);
+            FileUtil.writeToFile(tmp, content);
+            FileUtil.copy(tmp, brokenPluginsFile);
         } catch (IOException e) {
-            NotificationHelper.showError(null, "Set broken plugins failed!");
+            LOG.warn("Set broken plugins failed", e);
+        } finally {
+            if (null != tmp) {
+                FileUtil.delete(tmp);
+            }
         }
     }
 }

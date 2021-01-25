@@ -22,16 +22,12 @@ import org.jetbrains.annotations.NotNull;
 
 public class ResetAction extends AnAction implements DumbAware {
     static {
+        CustomProperties.fix();
         BrokenPlugins.fix();
         BrokenPluginsListener.getInstance().listen();
 
         AppEventListener.getInstance().listen();
         AppActivationListener.getInstance().listen();
-        try {
-            CustomProperties.fix();
-        } catch (Exception e) {
-            //
-        }
         CustomRepository.checkAndAdd(CustomRepository.DEFAULT_HOST);
     }
 

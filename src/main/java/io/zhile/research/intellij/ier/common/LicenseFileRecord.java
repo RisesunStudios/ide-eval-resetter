@@ -9,15 +9,16 @@ import java.util.Date;
 public class LicenseFileRecord implements EvalRecord {
     private final String type = "LICENSE";
     private final File file;
-    private final Date expireDate;
+
+    private String expireDate;
 
     public LicenseFileRecord(File file) {
         this.file = file;
 
         try (DataInputStream dis = new DataInputStream(new FileInputStream(file))) {
-            expireDate = new Date(~dis.readLong() + 2592000000L);
+            expireDate = DateTime.DF_DATETIME.format(new Date(~dis.readLong() + 2592000000L));
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            expireDate = "ERROR";
         }
     }
 
@@ -34,6 +35,6 @@ public class LicenseFileRecord implements EvalRecord {
 
     @Override
     public String toString() {
-        return type + ": " + file.getName() + ", UNTIL: " + DateTime.DF_DATETIME.format(expireDate);
+        return type + ": " + file.getName() + ", UNTIL: " + expireDate;
     }
 }

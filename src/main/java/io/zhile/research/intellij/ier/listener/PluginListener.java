@@ -20,7 +20,7 @@ public class PluginListener implements DynamicPluginListener {
         }
 
         ActionManager.getInstance().getAction(Constants.RESET_ACTION_ID);
-        NotificationHelper.showInfo(null, "Plugin installed successfully! Now enjoy it~<br>For more information, visit <a href='https://zhile.io/2020/11/18/jetbrains-eval-reset.html'>here</a>.");
+        NotificationHelper.showInfo(null, "Plugin installed successfully! Now enjoy it~<br>For more information, visit <a href='https://zhile.io/2020/11/18/jetbrains-eval-reset-da33a93d.html'>here</a>.");
     }
 
     @Override

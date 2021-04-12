@@ -15,14 +15,18 @@ import io.zhile.research.intellij.ier.helper.ResetTimeHelper;
 import org.jetbrains.annotations.NotNull;
 
 public class AppActivationListener implements ApplicationActivationListener, Disposable {
-    private static AppActivationListener instance = new AppActivationListener();
+    private static AppActivationListener instance;
     private static MessageBusConnection connection;
 
     protected AppActivationListener() {
 
     }
 
-    public static AppActivationListener getInstance() {
+    public synchronized static AppActivationListener getInstance() {
+        if (instance == null) {
+            instance = new AppActivationListener();
+        }
+
         return instance;
     }
 

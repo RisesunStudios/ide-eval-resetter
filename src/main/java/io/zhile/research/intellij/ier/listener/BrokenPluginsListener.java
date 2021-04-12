@@ -9,14 +9,18 @@ import io.zhile.research.intellij.ier.helper.BrokenPlugins;
 import org.jetbrains.annotations.NotNull;
 
 public class BrokenPluginsListener implements ApplicationActivationListener, Disposable {
-    private static BrokenPluginsListener instance = new BrokenPluginsListener();
+    private static BrokenPluginsListener instance;
     private static MessageBusConnection connection;
 
     protected BrokenPluginsListener() {
 
     }
 
-    public static BrokenPluginsListener getInstance() {
+    public synchronized static BrokenPluginsListener getInstance() {
+        if (instance == null) {
+            instance = new BrokenPluginsListener();
+        }
+
         return instance;
     }
 

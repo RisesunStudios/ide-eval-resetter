@@ -13,14 +13,18 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class AppEventListener implements AppLifecycleListener, Disposable {
-    private static AppEventListener instance = new AppEventListener();
+    private static AppEventListener instance;
     private static MessageBusConnection connection;
 
     protected AppEventListener() {
 
     }
 
-    public static AppEventListener getInstance() {
+    public synchronized static AppEventListener getInstance() {
+        if (instance == null) {
+            instance = new AppEventListener();
+        }
+
         return instance;
     }
 

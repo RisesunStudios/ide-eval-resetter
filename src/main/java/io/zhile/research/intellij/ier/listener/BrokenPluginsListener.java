@@ -3,12 +3,14 @@ package io.zhile.research.intellij.ier.listener;
 import com.intellij.openapi.Disposable;
 import com.intellij.openapi.application.ApplicationActivationListener;
 import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.wm.IdeFrame;
 import com.intellij.util.messages.MessageBusConnection;
 import io.zhile.research.intellij.ier.helper.BrokenPlugins;
 import org.jetbrains.annotations.NotNull;
 
 public class BrokenPluginsListener implements ApplicationActivationListener, Disposable {
+    private static final Logger LOG = Logger.getInstance(BrokenPluginsListener.class);
     private static BrokenPluginsListener instance;
     private static MessageBusConnection connection;
 
@@ -29,8 +31,12 @@ public class BrokenPluginsListener implements ApplicationActivationListener, Dis
             return;
         }
 
-        connection = ApplicationManager.getApplication().getMessageBus().connect();
-        connection.subscribe(ApplicationActivationListener.TOPIC, this);
+        try {
+            connection = ApplicationManager.getApplication().getMessageBus().connect();
+            connection.subscribe(ApplicationActivationListener.TOPIC, this);
+        } catch (Exception e) {
+            LOG.warn("sub app activation failed.");
+        }
     }
 
     public synchronized void stop() {

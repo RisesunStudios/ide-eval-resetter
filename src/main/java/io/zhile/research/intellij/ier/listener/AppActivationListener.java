@@ -6,6 +6,7 @@ import com.intellij.openapi.actionSystem.ActionManager;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.application.ApplicationActivationListener;
 import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.wm.IdeFrame;
 import com.intellij.util.messages.MessageBusConnection;
 import io.zhile.research.intellij.ier.common.Resetter;
@@ -15,6 +16,7 @@ import io.zhile.research.intellij.ier.helper.ResetTimeHelper;
 import org.jetbrains.annotations.NotNull;
 
 public class AppActivationListener implements ApplicationActivationListener, Disposable {
+    private static final Logger LOG = Logger.getInstance(AppActivationListener.class);
     private static AppActivationListener instance;
     private static MessageBusConnection connection;
 
@@ -35,8 +37,12 @@ public class AppActivationListener implements ApplicationActivationListener, Dis
             return;
         }
 
-        connection = ApplicationManager.getApplication().getMessageBus().connect();
-        connection.subscribe(ApplicationActivationListener.TOPIC, this);
+        try {
+            connection = ApplicationManager.getApplication().getMessageBus().connect();
+            connection.subscribe(ApplicationActivationListener.TOPIC, this);
+        } catch (Exception e) {
+            LOG.warn("sub app activation failed.");
+        }
     }
 
     public synchronized void stop() {

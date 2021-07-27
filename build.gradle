@@ -1,10 +1,10 @@
 plugins {
     id 'java'
-    id 'org.jetbrains.intellij' version '0.6.5'
+    id 'org.jetbrains.intellij' version '0.7.3'
 }
 
 group 'io.zhile.research.intellij'
-version '2.1.14'
+version '2.1.15'
 
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
@@ -23,12 +23,14 @@ buildPlugin {
 
 // See https://github.com/JetBrains/gradle-intellij-plugin/
 intellij {
-    version "2020.2.4"
-    type "IU"
+    version = "2020.2.4"
+    type = "IU"
 }
 
 patchPluginXml {
-    changeNotes """<pre>
+    changeNotes = """<pre>
+Release v2.1.15
+  1. fix welcome screen menu for 2021.1
 Release v2.1.14
   1. fix minor exceptions
 Release v2.1.13
@@ -81,6 +83,6 @@ Release v1.0.2
   1. compatibility fix
 </pre>"""
 
-    sinceBuild "145.258"
-    untilBuild null
+    sinceBuild = "145.258"
+    untilBuild = null
 }

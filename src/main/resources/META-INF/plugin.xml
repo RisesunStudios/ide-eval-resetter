@@ -26,5 +26,7 @@
     <applicationListeners>
         <listener class="io.zhile.research.intellij.ier.listener.PluginListener"
                   topic="com.intellij.ide.plugins.DynamicPluginListener"/>
+        <listener class="io.zhile.research.intellij.ier.listener.AppInitListener"
+                  topic="com.intellij.ide.AppLifecycleListener"/>
     </applicationListeners>
 </idea-plugin>

@@ -3,6 +3,7 @@ package io.zhile.research.intellij.ier.listener;
 import com.intellij.ide.AppLifecycleListener;
 import com.intellij.openapi.Disposable;
 import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Ref;
 import com.intellij.util.messages.MessageBusConnection;
@@ -13,6 +14,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class AppEventListener implements AppLifecycleListener, Disposable {
+    private static final Logger LOG = Logger.getInstance(AppEventListener.class);
     private static AppEventListener instance;
     private static MessageBusConnection connection;
 
@@ -33,8 +35,12 @@ public class AppEventListener implements AppLifecycleListener, Disposable {
             return;
         }
 
-        connection = ApplicationManager.getApplication().getMessageBus().connect();
-        connection.subscribe(AppLifecycleListener.TOPIC, this);
+        try {
+            connection = ApplicationManager.getApplication().getMessageBus().connect();
+            connection.subscribe(AppLifecycleListener.TOPIC, this);
+        } catch (Exception e) {
+            LOG.warn("sub app lifecycle failed.");
+        }
     }
 
     public synchronized void stop() {

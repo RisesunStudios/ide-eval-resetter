@@ -14,8 +14,9 @@ public class MainDialog extends DialogWrapper {
 
     @Override
     protected JComponent createCenterPanel() {
-        MainForm mainForm = new MainForm(this);
-        return mainForm.getContent();
+        MainForm mainForm = new MainForm(getDisposable(), this);
+
+        return mainForm.getContent(getDisposable());
     }
 
     @Override

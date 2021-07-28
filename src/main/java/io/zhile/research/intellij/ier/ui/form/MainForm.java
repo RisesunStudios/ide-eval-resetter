@@ -17,10 +17,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
-public class MainForm implements Disposable {
+public class MainForm {
     private JPanel rootPanel;
     private JButton btnReset;
-    private JList lstMain;
+    private JList<String> lstMain;
     private JLabel lblLastResetTime;
     private JButton btnReload;
     private JLabel lblFound;
@@ -28,17 +28,35 @@ public class MainForm implements Disposable {
     private JCheckBox chkResetAuto;
     private JLabel lblVersion;
 
-    private final DialogWrapper dialogWrapper;
-    private final DefaultListModel<String> listModel = new DefaultListModel<>();
+    private DialogWrapper dialogWrapper;
+    private DefaultListModel<String> listModel = new DefaultListModel<>();
 
-    public MainForm(DialogWrapper dialogWrapper) {
-        this.dialogWrapper = dialogWrapper;
-        if (dialogWrapper != null) {
-            Disposer.register(dialogWrapper.getDisposable(), this);
-        }
+    public MainForm(Disposable disposable) {
+        this(disposable, null);
     }
 
-    public JPanel getContent() {
+    public MainForm(Disposable disposable, DialogWrapper wrapper) {
+        this.dialogWrapper = wrapper;
+
+        Disposer.register(disposable, new Disposable() {
+            @Override
+            public void dispose() {
+                rootPanel.removeAll();
+
+                listModel = null;
+                dialogWrapper = null;
+            }
+        });
+    }
+
+    public JPanel getContent(Disposable disposable) {
+        Disposer.register(disposable, new Disposable() {
+            @Override
+            public void dispose() {
+                rootPanel.removeAll();
+            }
+        });
+
         boldFont(lblFound);
         boldFont(lblLastResetTimeLabel);
         reloadLastResetTime();
@@ -46,38 +64,38 @@ public class MainForm implements Disposable {
         lblVersion.setText("v" + PluginHelper.getPluginVersion());
 
         chkResetAuto.setSelected(Resetter.isAutoReset());
-        chkResetAuto.addActionListener(new AbstractAction() {
+        addActionEventListener(chkResetAuto, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Resetter.setAutoReset(chkResetAuto.isSelected());
             }
-        });
+        }, disposable);
 
         lstMain.setModel(listModel);
         reloadRecordItems();
 
         btnReload.setIcon(AllIcons.Actions.Refresh);
-        btnReload.addActionListener(new AbstractAction() {
+        addActionEventListener(btnReload, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 reloadLastResetTime();
                 reloadRecordItems();
             }
-        });
+        }, disposable);
 
         btnReset.setIcon(AllIcons.General.Reset);
-        btnReset.addActionListener(new AbstractAction() {
+        addActionEventListener(btnReset, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 resetEvalItems();
             }
-        });
+        }, disposable);
 
         if (null != dialogWrapper) {
             dialogWrapper.getRootPane().setDefaultButton(btnReset);
+            rootPanel.setMinimumSize(new Dimension(600, 240));
         }
 
-        rootPanel.setMinimumSize(new Dimension(600, 240));
         return rootPanel;
     }
 
@@ -115,14 +133,13 @@ public class MainForm implements Disposable {
         component.setFont(font.deriveFont(font.getStyle() | Font.BOLD));
     }
 
-    @Override
-    public void dispose() {
-        for (AbstractButton button : new AbstractButton[]{chkResetAuto, btnReload, btnReset}) {
-            for (ActionListener listener : button.getActionListeners()) {
+    private static void addActionEventListener(final AbstractButton button, final ActionListener listener, Disposable disposable) {
+        button.addActionListener(listener);
+        Disposer.register(disposable, new Disposable() {
+            @Override
+            public void dispose() {
                 button.removeActionListener(listener);
             }
-        }
-
-        rootPanel.removeAll();
+        });
     }
 }

@@ -5,7 +5,6 @@ import com.intellij.ide.plugins.IdeaPluginDescriptor;
 import com.intellij.openapi.actionSystem.ActionManager;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.DefaultActionGroup;
-import com.intellij.openapi.util.Disposer;
 import io.zhile.research.intellij.ier.helper.Constants;
 import io.zhile.research.intellij.ier.helper.NotificationHelper;
 import io.zhile.research.intellij.ier.helper.PluginHelper;
@@ -34,9 +33,7 @@ public class PluginListener implements DynamicPluginListener {
             ((DefaultActionGroup) optionsGroup).remove(ActionManager.getInstance().getAction(Constants.RESET_ACTION_ID));
         }
 
-        Disposer.dispose(BrokenPluginsListener.getInstance());
-        Disposer.dispose(AppActivationListener.getInstance());
-        Disposer.dispose(AppEventListener.getInstance());
+        ListenerConnector.dispose();
         MainToolWindowFactory.unregisterAll();
     }
 }

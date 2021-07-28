@@ -11,8 +11,6 @@
     </p>
     ]]></description>
 
-    <depends>com.intellij.modules.ultimate</depends>
-
     <actions>
         <action class="io.zhile.research.intellij.ier.action.ResetAction"
                 id="io.zhile.research.intellij.ier.action.ResetAction">

@@ -4,7 +4,7 @@ plugins {
 }
 
 group 'io.zhile.research.intellij'
-version '2.1.15'
+version '2.2.0'
 
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
@@ -29,8 +29,11 @@ intellij {
 
 patchPluginXml {
     changeNotes = """<pre>
+Release v2.2.0
+  1. fix the issue: "Cannot create listener"
+  2. add support for: Android Studio
 Release v2.1.15
-  1. fix welcome screen menu for 2021.1
+  1. fix welcome screen menu for 2021.2
 Release v2.1.14
   1. fix minor exceptions
 Release v2.1.13

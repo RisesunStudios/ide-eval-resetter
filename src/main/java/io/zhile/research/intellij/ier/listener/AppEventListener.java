@@ -1,57 +1,15 @@
 package io.zhile.research.intellij.ier.listener;
 
 import com.intellij.ide.AppLifecycleListener;
-import com.intellij.openapi.Disposable;
-import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Ref;
-import com.intellij.util.messages.MessageBusConnection;
 import io.zhile.research.intellij.ier.common.Resetter;
 import io.zhile.research.intellij.ier.helper.BrokenPlugins;
 import io.zhile.research.intellij.ier.helper.ResetTimeHelper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class AppEventListener implements AppLifecycleListener, Disposable {
-    private static final Logger LOG = Logger.getInstance(AppEventListener.class);
-    private static AppEventListener instance;
-    private static MessageBusConnection connection;
-
-    protected AppEventListener() {
-
-    }
-
-    public synchronized static AppEventListener getInstance() {
-        if (instance == null) {
-            instance = new AppEventListener();
-        }
-
-        return instance;
-    }
-
-    public synchronized void listen() {
-        if (connection != null) {
-            return;
-        }
-
-        try {
-            connection = ApplicationManager.getApplication().getMessageBus().connect();
-            connection.subscribe(AppLifecycleListener.TOPIC, this);
-        } catch (Exception e) {
-            LOG.warn("sub app lifecycle failed.");
-        }
-    }
-
-    public synchronized void stop() {
-        if (connection == null) {
-            return;
-        }
-
-        connection.disconnect();
-        connection = null;
-    }
-
+public class AppEventListener implements AppLifecycleListener {
     public void appFrameCreated(String[] commandLineArgs, @NotNull Ref<Boolean> willOpenProject) {
 
     }
@@ -73,6 +31,7 @@ public class AppEventListener implements AppLifecycleListener, Disposable {
     }
 
     public void appClosing() {
+        ListenerConnector.dispose();
         BrokenPlugins.fix();
 
         if (!Resetter.isAutoReset()) {
@@ -81,11 +40,5 @@ public class AppEventListener implements AppLifecycleListener, Disposable {
 
         Resetter.reset(Resetter.getEvalRecords());
         ResetTimeHelper.resetLastResetTime();
-    }
-
-    @Override
-    public void dispose() {
-        stop();
-        instance = null;
     }
 }

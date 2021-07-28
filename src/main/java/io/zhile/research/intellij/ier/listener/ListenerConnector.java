@@ -2,6 +2,7 @@ package io.zhile.research.intellij.ier.listener;
 
 import com.intellij.ide.AppLifecycleListener;
 import com.intellij.openapi.Disposable;
+import com.intellij.openapi.application.Application;
 import com.intellij.openapi.application.ApplicationActivationListener;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.util.Disposer;
@@ -20,8 +21,10 @@ public class ListenerConnector {
         BrokenPlugins.fix();
         CustomRepository.checkAndAdd(CustomRepository.DEFAULT_HOST);
 
+        Application app = ApplicationManager.getApplication();
         disposable = Disposer.newDisposable();
-        MessageBusConnection connection = ApplicationManager.getApplication().getMessageBus().connect(disposable);
+        Disposer.register(app, disposable);
+        MessageBusConnection connection = app.getMessageBus().connect(disposable);
         connection.subscribe(AppLifecycleListener.TOPIC, new AppEventListener());
         connection.subscribe(ApplicationActivationListener.TOPIC, new AppActivationListener());
     }

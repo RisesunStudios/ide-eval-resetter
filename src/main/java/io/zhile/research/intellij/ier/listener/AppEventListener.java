@@ -31,7 +31,6 @@ public class AppEventListener implements AppLifecycleListener {
     }
 
     public void appClosing() {
-        ListenerConnector.dispose();
         BrokenPlugins.fix();
 
         if (!Resetter.isAutoReset()) {

@@ -29,4 +29,8 @@
         <listener class="io.zhile.research.intellij.ier.listener.AppInitListener"
                   topic="com.intellij.ide.AppLifecycleListener"/>
     </applicationListeners>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <errorHandler implementation="io.zhile.research.intellij.ier.helper.ErrorReporter"/>
+    </extensions>
 </idea-plugin>

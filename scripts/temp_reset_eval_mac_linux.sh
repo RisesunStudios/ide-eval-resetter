@@ -18,6 +18,7 @@ elif [ "$OS_NAME" = "Linux" ]; then
 	for PRD in $JB_PRODUCTS; do
 	  rm -rf ~/.${PRD}*/config/eval
     rm -rf ~/.config/${PRD}*/eval
+    rm -rf ~/.config/JetBrains/${PRD}*/eval
 	done
 else
 	echo 'unsupported'

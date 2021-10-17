@@ -9,3 +9,5 @@
 4. Restart your IDE.
 5. Now you have another 30 days eval time :)
 6. For more information, visit [here](https://zhile.io/2020/11/18/jetbrains-eval-reset-da33a93d.html).
+
+### 目前插件不支持新版本的登录试用，已经有更好更方便的方式了，稍后会推出。

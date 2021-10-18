@@ -7,10 +7,7 @@ import com.intellij.ide.util.PropertiesComponent;
 import com.intellij.ide.util.PropertiesComponentImpl;
 import com.intellij.openapi.application.PathManager;
 import com.intellij.openapi.util.SystemInfo;
-import io.zhile.research.intellij.ier.helper.AppHelper;
-import io.zhile.research.intellij.ier.helper.Constants;
-import io.zhile.research.intellij.ier.helper.NotificationHelper;
-import io.zhile.research.intellij.ier.helper.ReflectionHelper;
+import io.zhile.research.intellij.ier.helper.*;
 import io.zhile.research.intellij.ier.plugins.MyBatisCodeHelper;
 import org.jdom.Attribute;
 import org.jdom.Element;
@@ -18,10 +15,7 @@ import org.jdom.Element;
 import java.io.File;
 import java.lang.reflect.Method;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
 
@@ -34,7 +28,7 @@ public class Resetter {
     private static final String AUTO_RESET_KEY = Constants.PLUGIN_PREFS_PREFIX + ".auto_reset." + Constants.IDE_NAME_LOWER + "." + Constants.IDE_HASH;
 
     private static final Method METHOD_GET_PRODUCT_CODE = ReflectionHelper.getMethod(IdeaPluginDescriptor.class, "getProductCode");
-    private static final Method METHOD_GET_RELEASE_VERSION = ReflectionHelper.getMethod(IdeaPluginDescriptor.class, "getReleaseVersion");
+    private static final Method METHOD_GET_RELEASE_DATE = ReflectionHelper.getMethod(IdeaPluginDescriptor.class, "getReleaseDate");
     private static final Set<String> LICENSE_FILES = new TreeSet<>();
 
     public static List<EvalRecord> getEvalRecords() {
@@ -163,7 +157,7 @@ public class Resetter {
 
     public static void touchLicenses() {
         try {
-            if (null == METHOD_GET_PRODUCT_CODE || null == METHOD_GET_RELEASE_VERSION) {
+            if (null == METHOD_GET_PRODUCT_CODE || null == METHOD_GET_RELEASE_DATE) {
                 return;
             }
 
@@ -192,18 +186,18 @@ public class Resetter {
     }
 
     public static void addPluginLicense(IdeaPluginDescriptor descriptor) {
-        if (null == METHOD_GET_PRODUCT_CODE || null == METHOD_GET_RELEASE_VERSION) {
+        if (null == METHOD_GET_PRODUCT_CODE || null == METHOD_GET_RELEASE_DATE) {
             return;
         }
 
         try {
             String productCode = (String) METHOD_GET_PRODUCT_CODE.invoke(descriptor);
-            int releaseVersion = (int) METHOD_GET_RELEASE_VERSION.invoke(descriptor);
-            if (null == productCode || productCode.isEmpty() || 0 == releaseVersion) {
+            Date releaseDate = (Date) METHOD_GET_RELEASE_DATE.invoke(descriptor);
+            if (null == productCode || productCode.isEmpty() || null == releaseDate) {
                 return;
             }
 
-            LICENSE_FILES.add(String.format("plg_%s_%s.evaluation.key", productCode, releaseVersion));
+            LICENSE_FILES.add(String.format("plg_%s_%s.evaluation.key", productCode, DateTime.getPluginReleaseDateStr(releaseDate)));
         } catch (Exception e) {
             NotificationHelper.showError(null, "Add plugin eval license failed!");
         }

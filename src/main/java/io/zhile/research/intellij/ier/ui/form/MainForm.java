@@ -121,6 +121,7 @@ public class MainForm {
     private void reloadRecordItems() {
         listModel.clear();
 
+        Resetter.touchLicenses();
         List<EvalRecord> recordItemList = Resetter.getEvalRecords();
         for (EvalRecord record : recordItemList) {
             listModel.addElement(record.toString());

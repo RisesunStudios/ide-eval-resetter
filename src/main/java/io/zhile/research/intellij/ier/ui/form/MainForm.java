@@ -49,6 +49,21 @@ public class MainForm {
         });
     }
 
+    private static void boldFont(Component component) {
+        Font font = component.getFont();
+        component.setFont(font.deriveFont(font.getStyle() | Font.BOLD));
+    }
+
+    private static void addActionEventListener(final AbstractButton button, final ActionListener listener, Disposable disposable) {
+        button.addActionListener(listener);
+        Disposer.register(disposable, new Disposable() {
+            @Override
+            public void dispose() {
+                button.removeActionListener(listener);
+            }
+        });
+    }
+
     public JPanel getContent(Disposable disposable) {
         Disposer.register(disposable, new Disposable() {
             @Override
@@ -117,6 +132,7 @@ public class MainForm {
             return;
         }
 
+        Resetter.touchLicenses();
         Resetter.reset(Resetter.getEvalRecords());
         ResetTimeHelper.resetLastResetTime();
         listModel.clear();
@@ -126,20 +142,5 @@ public class MainForm {
         }
 
         AppHelper.restart();
-    }
-
-    private static void boldFont(Component component) {
-        Font font = component.getFont();
-        component.setFont(font.deriveFont(font.getStyle() | Font.BOLD));
-    }
-
-    private static void addActionEventListener(final AbstractButton button, final ActionListener listener, Disposable disposable) {
-        button.addActionListener(listener);
-        Disposer.register(disposable, new Disposable() {
-            @Override
-            public void dispose() {
-                button.removeActionListener(listener);
-            }
-        });
     }
 }

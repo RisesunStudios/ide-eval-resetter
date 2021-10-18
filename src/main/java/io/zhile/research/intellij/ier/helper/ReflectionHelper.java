@@ -10,4 +10,21 @@ public class ReflectionHelper {
             return null;
         }
     }
+
+    public static Method getMethod(String className, String methodName, Class<?>... methodParameterTypes) {
+        Class<?> klass = getClass(className);
+        if (null == klass) {
+            return null;
+        }
+
+        return getMethod(klass, methodName, methodParameterTypes);
+    }
+
+    public static Class<?> getClass(String name) {
+        try {
+            return Class.forName(name);
+        } catch (ClassNotFoundException e) {
+            return null;
+        }
+    }
 }

@@ -10,6 +10,9 @@ import com.intellij.util.messages.MessageBusConnection;
 import io.zhile.research.intellij.ier.helper.BrokenPlugins;
 import io.zhile.research.intellij.ier.helper.CustomProperties;
 import io.zhile.research.intellij.ier.helper.CustomRepository;
+import io.zhile.research.intellij.ier.helper.ReflectionHelper;
+
+import java.lang.reflect.Method;
 
 public class ListenerConnector {
     private static Disposable disposable;
@@ -27,6 +30,8 @@ public class ListenerConnector {
         MessageBusConnection connection = app.getMessageBus().connect(disposable);
         connection.subscribe(AppLifecycleListener.TOPIC, new AppEventListener());
         connection.subscribe(ApplicationActivationListener.TOPIC, new AppActivationListener());
+
+        callPluginInstallListenerMethod("setup");
     }
 
     public static void dispose() {
@@ -34,7 +39,22 @@ public class ListenerConnector {
             return;
         }
 
+        callPluginInstallListenerMethod("remove");
         Disposer.dispose(disposable);
         disposable = null;
+    }
+
+    private static void callPluginInstallListenerMethod(String methodName) {    // reflection for old versions
+        String className = ListenerConnector.class.getPackage().getName() + ".PluginListener";
+        Method method = ReflectionHelper.getMethod(className, methodName);
+        if (null == method) {
+            return;
+        }
+
+        try {
+            method.invoke(null);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

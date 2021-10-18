@@ -4,7 +4,7 @@ plugins {
 }
 
 group 'io.zhile.research.intellij'
-version '2.2.4'
+version '2.3.0'
 
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
@@ -29,6 +29,8 @@ intellij {
 
 patchPluginXml {
     changeNotes = """<pre>
+Release v2.3.0
+  1. fix for 2021.2.3
 Release v2.2.4
   1. fix for 2019.2
 Release v2.2.3

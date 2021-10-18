@@ -7,6 +7,7 @@ import com.intellij.ide.util.PropertiesComponent;
 import com.intellij.ide.util.PropertiesComponentImpl;
 import com.intellij.openapi.application.PathManager;
 import com.intellij.openapi.util.SystemInfo;
+import io.zhile.research.intellij.ier.helper.AppHelper;
 import io.zhile.research.intellij.ier.helper.Constants;
 import io.zhile.research.intellij.ier.helper.NotificationHelper;
 import io.zhile.research.intellij.ier.helper.ReflectionHelper;
@@ -18,6 +19,8 @@ import java.lang.reflect.Method;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
 
@@ -28,6 +31,10 @@ public class Resetter {
     private static final String DEVICE_ID_KEY = DEFAULT_VENDOR + ".device_id";
     private static final String EVAL_KEY = "evlsprt";
     private static final String AUTO_RESET_KEY = Constants.PLUGIN_PREFS_PREFIX + ".auto_reset." + Constants.IDE_NAME_LOWER + "." + Constants.IDE_HASH;
+
+    private static final Method METHOD_GET_PRODUCT_CODE = ReflectionHelper.getMethod(IdeaPluginDescriptor.class, "getProductCode");
+    private static final Method METHOD_GET_RELEASE_VERSION = ReflectionHelper.getMethod(IdeaPluginDescriptor.class, "getReleaseVersion");
+    private static final Set<String> LICENSE_FILES = new TreeSet<>();
 
     public static List<EvalRecord> getEvalRecords() {
         List<EvalRecord> list = new ArrayList<>();
@@ -113,10 +120,9 @@ public class Resetter {
                 getAllPrefsKeys(Preferences.userRoot().node(DEFAULT_VENDOR + "/" + name + "/" + Constants.IDE_HASH), prefsList);
             }
 
-            Method methodGetProductCode = ReflectionHelper.getMethod(IdeaPluginDescriptor.class, "getProductCode");
-            if (null != methodGetProductCode) {
+            if (null != METHOD_GET_PRODUCT_CODE) {
                 for (IdeaPluginDescriptor descriptor : PluginManager.getPlugins()) {
-                    String productCode = (String) methodGetProductCode.invoke(descriptor);
+                    String productCode = (String) METHOD_GET_PRODUCT_CODE.invoke(descriptor);
                     if (null == productCode || productCode.isEmpty()) {
                         continue;
                     }
@@ -150,6 +156,54 @@ public class Resetter {
         }
 
         return list;
+    }
+
+    public static void touchLicenses() {
+        try {
+            if (null == METHOD_GET_PRODUCT_CODE || null == METHOD_GET_RELEASE_VERSION) {
+                return;
+            }
+
+            File evalDir = getEvalDir();
+            if (!evalDir.exists()) {
+                evalDir.mkdirs();
+            }
+
+            LICENSE_FILES.add(String.format("%s%s.evaluation.key", AppHelper.getProductCode(), AppHelper.getBuildNumber().getBaselineVersion()));
+
+            for (IdeaPluginDescriptor descriptor : PluginManager.getPlugins()) {
+                addPluginLicense(descriptor);
+            }
+
+            for (String fileName : LICENSE_FILES) {
+                File licenseFile = new File(evalDir, fileName);
+                if (licenseFile.exists()) {
+                    continue;
+                }
+
+                LicenseFileRecord.touch(licenseFile);
+            }
+        } catch (Exception e) {
+            NotificationHelper.showError(null, "Touch eval license failed!");
+        }
+    }
+
+    public static void addPluginLicense(IdeaPluginDescriptor descriptor) {
+        if (null == METHOD_GET_PRODUCT_CODE || null == METHOD_GET_RELEASE_VERSION) {
+            return;
+        }
+
+        try {
+            String productCode = (String) METHOD_GET_PRODUCT_CODE.invoke(descriptor);
+            int releaseVersion = (int) METHOD_GET_RELEASE_VERSION.invoke(descriptor);
+            if (null == productCode || productCode.isEmpty() || 0 == releaseVersion) {
+                return;
+            }
+
+            LICENSE_FILES.add(String.format("plg_%s_%s.evaluation.key", productCode, releaseVersion));
+        } catch (Exception e) {
+            NotificationHelper.showError(null, "Add plugin eval license failed!");
+        }
     }
 
     public static void reset(List<EvalRecord> records) {

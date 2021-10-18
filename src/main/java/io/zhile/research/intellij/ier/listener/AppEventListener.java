@@ -32,6 +32,7 @@ public class AppEventListener implements AppLifecycleListener {
 
     public void appClosing() {
         BrokenPlugins.fix();
+        Resetter.touchLicenses();
 
         if (!Resetter.isAutoReset()) {
             return;

@@ -22,15 +22,19 @@ public class LicenseFileRecord implements EvalRecord {
         }
     }
 
+    public static void touch(File file) throws Exception {
+        try (DataOutputStream dos = new DataOutputStream(new FileOutputStream(file))) {
+            dos.writeLong(~System.currentTimeMillis());
+        }
+    }
+
     @Override
     public void reset() throws Exception {
         if (!FileUtil.delete(file)) {
             throw new Exception("Remove " + type + " failed: " + file.getAbsolutePath());
         }
 
-        try (DataOutputStream dos = new DataOutputStream(new FileOutputStream(file))) {
-            dos.writeLong(~System.currentTimeMillis());
-        }
+        touch(file);
     }
 
     @Override

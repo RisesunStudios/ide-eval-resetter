@@ -11,6 +11,7 @@ import io.zhile.research.intellij.ier.helper.AppHelper;
 import io.zhile.research.intellij.ier.helper.Constants;
 import io.zhile.research.intellij.ier.helper.NotificationHelper;
 import io.zhile.research.intellij.ier.helper.ReflectionHelper;
+import io.zhile.research.intellij.ier.plugins.MyBatisCodeHelper;
 import org.jdom.Attribute;
 import org.jdom.Element;
 
@@ -154,6 +155,8 @@ public class Resetter {
                 }
             }
         }
+
+        new MyBatisCodeHelper().test(list);
 
         return list;
     }

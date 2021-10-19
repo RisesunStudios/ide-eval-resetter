@@ -22,10 +22,9 @@ import java.util.prefs.Preferences;
 public class Resetter {
     private static final String DEFAULT_VENDOR = "jetbrains";
     private static final String OLD_MACHINE_ID_KEY = "JetBrains.UserIdOnMachine";
-    private static final String NEW_MACHINE_ID_KEY = DEFAULT_VENDOR + ".user_id_on_machine";
-    private static final String DEVICE_ID_KEY = DEFAULT_VENDOR + ".device_id";
     private static final String EVAL_KEY = "evlsprt";
-    private static final String AUTO_RESET_KEY = Constants.PLUGIN_PREFS_PREFIX + ".auto_reset." + Constants.IDE_NAME_LOWER + "." + Constants.IDE_HASH;
+    private static final String AUTO_RESET_KEY = Constants.PLUGIN_PREFS_PREFIX + ".auto_reset." + Constants.IDE_NAME_LOWER;
+    private static final String AUTO_LOGOUT_KEY = Constants.PLUGIN_PREFS_PREFIX + ".auto_logout";
 
     private static final Method METHOD_GET_PRODUCT_CODE = ReflectionHelper.getMethod(IdeaPluginDescriptor.class, "getProductCode");
     private static final Method METHOD_GET_RELEASE_DATE = ReflectionHelper.getMethod(IdeaPluginDescriptor.class, "getReleaseDate");
@@ -92,10 +91,24 @@ public class Resetter {
             }
         }
 
+        KeepCondition keepCondition = new KeepCondition() {
+            @Override
+            public boolean needKeep() {
+                return !isAutoLogout();
+            }
+        };
         PreferenceRecord[] prefsValue = new PreferenceRecord[]{
                 new PreferenceRecord(OLD_MACHINE_ID_KEY, true),
-                new PreferenceRecord(NEW_MACHINE_ID_KEY),
-                new PreferenceRecord(DEVICE_ID_KEY),
+                new PreferenceRecord(DEFAULT_VENDOR + ".user_id_on_machine"),
+                new PreferenceRecord(DEFAULT_VENDOR + ".device_id"),
+                new PreferenceRecord(DEFAULT_VENDOR + ".marketplacedownloads_device_id"),
+                new PreferenceRecord(DEFAULT_VENDOR + ".mlse_device_id"),
+                new PreferenceRecord(DEFAULT_VENDOR + ".auth-tokens.account_jetbrains_com"),
+                new PreferenceRecord(DEFAULT_VENDOR + ".feature_usage_event_log_salt"),
+                new PreferenceRecord(DEFAULT_VENDOR + ".mlse_feature_usage_event_log_salt"),
+                new PreferenceRecord(DEFAULT_VENDOR + ".jetprofile.idtoken"),
+                new PreferenceRecord(DEFAULT_VENDOR + ".jetprofile.userid", false, keepCondition),
+                new PreferenceRecord(DEFAULT_VENDOR + ".jetprofile.userlogin", false, keepCondition),
         };
         for (PreferenceRecord record : prefsValue) {
             if (record.getValue() == null) {
@@ -223,6 +236,15 @@ public class Resetter {
 
     public static void setAutoReset(boolean isAutoReset) {
         Prefs.putBoolean(AUTO_RESET_KEY, isAutoReset);
+        syncPrefs();
+    }
+
+    public static boolean isAutoLogout() {
+        return Prefs.getBoolean(AUTO_LOGOUT_KEY, false);
+    }
+
+    public static void setAutoLogout(boolean isAutoClear) {
+        Prefs.putBoolean(AUTO_LOGOUT_KEY, isAutoClear);
         syncPrefs();
     }
 

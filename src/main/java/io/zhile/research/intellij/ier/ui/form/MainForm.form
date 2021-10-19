@@ -2,7 +2,7 @@
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="io.zhile.research.intellij.ier.ui.form.MainForm">
   <grid id="27dc6" binding="rootPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
     <constraints>
-      <xy x="20" y="20" width="500" height="400"/>
+      <xy x="20" y="20" width="567" height="400"/>
     </constraints>
     <properties/>
     <border type="none"/>
@@ -79,22 +79,32 @@
             <properties/>
             <border type="none"/>
             <children>
+              <component id="a1621" class="javax.swing.JCheckBox" binding="chkAutoLogout">
+                <constraints/>
+                <properties>
+                  <text value="Logout when reset"/>
+                  <toolTipText value="Logout account when reset(Global)"/>
+                </properties>
+              </component>
               <component id="3e8db" class="javax.swing.JCheckBox" binding="chkResetAuto">
                 <constraints/>
                 <properties>
                   <text value="Auto reset before per restart"/>
+                  <toolTipText value="Auto reset before per restart(For this IDE)"/>
                 </properties>
               </component>
               <component id="382d3" class="javax.swing.JButton" binding="btnReload">
                 <constraints/>
                 <properties>
                   <text value="Reload"/>
+                  <toolTipText value="Reload eval records list"/>
                 </properties>
               </component>
               <component id="7f8d9" class="javax.swing.JButton" binding="btnReset">
                 <constraints/>
                 <properties>
                   <text value="Reset"/>
+                  <toolTipText value="Reset eval info and restart IDE"/>
                 </properties>
               </component>
             </children>

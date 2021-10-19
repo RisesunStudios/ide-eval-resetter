@@ -48,7 +48,12 @@ public class PluginListener implements DynamicPluginListener, PluginStateListene
         }
 
         ActionManager.getInstance().getAction(Constants.RESET_ACTION_ID);
-        NotificationHelper.showInfo(null, "Plugin installed successfully! Now enjoy it~<br>For more information, visit <a href='https://zhile.io/2020/11/18/jetbrains-eval-reset-da33a93d.html'>here</a>.");
+
+        String link = "https://zhile.io/2020/11/18/jetbrains-eval-reset-da33a93d.html";
+        String autoResetTip = "Auto reset switch state: " + (Resetter.isAutoReset() ? "<b>on</b>" : "<b>off<b>");
+        String autoLogoutTip = "Auto logout switch state: " + (Resetter.isAutoLogout() ? "<b>on</b>" : "<b>off<b>");
+        String content = String.format("Plugin installed successfully!<br>For more information, visit <a href='%s'>this link</a>.<br><br>%s<br>%s", link, autoResetTip, autoLogoutTip);
+        NotificationHelper.showInfo(null, content);
     }
 
     @Override

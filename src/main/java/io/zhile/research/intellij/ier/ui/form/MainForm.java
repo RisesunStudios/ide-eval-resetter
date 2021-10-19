@@ -27,6 +27,7 @@ public class MainForm {
     private JLabel lblLastResetTimeLabel;
     private JCheckBox chkResetAuto;
     private JLabel lblVersion;
+    private JCheckBox chkAutoLogout;
 
     private DialogWrapper dialogWrapper;
     private DefaultListModel<String> listModel = new DefaultListModel<>();
@@ -78,6 +79,14 @@ public class MainForm {
 
         lblVersion.setText("v" + PluginHelper.getPluginVersion());
 
+        chkAutoLogout.setSelected(Resetter.isAutoLogout());
+        addActionEventListener(chkAutoLogout, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Resetter.setAutoLogout(chkAutoLogout.isSelected());
+            }
+        }, disposable);
+
         chkResetAuto.setSelected(Resetter.isAutoReset());
         addActionEventListener(chkResetAuto, new ActionListener() {
             @Override
@@ -108,7 +117,7 @@ public class MainForm {
 
         if (null != dialogWrapper) {
             dialogWrapper.getRootPane().setDefaultButton(btnReset);
-            rootPanel.setMinimumSize(new Dimension(600, 240));
+            rootPanel.setMinimumSize(new Dimension(640, 260));
         }
 
         return rootPanel;

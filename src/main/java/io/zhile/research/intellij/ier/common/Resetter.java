@@ -179,7 +179,7 @@ public class Resetter {
                 evalDir.mkdirs();
             }
 
-            LICENSE_FILES.add(String.format("%s%s.evaluation.key", AppHelper.getProductCode(), AppHelper.getBuildNumber().getBaselineVersion()));
+            LICENSE_FILES.add(String.format("%s%s.evaluation.key", AppHelper.getProductName(), Constants.IDE_BASELINE_VERSION));
 
             for (IdeaPluginDescriptor descriptor : PluginManager.getPlugins()) {
                 addPluginLicense(descriptor);

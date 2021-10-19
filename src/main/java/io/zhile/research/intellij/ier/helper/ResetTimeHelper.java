@@ -5,7 +5,7 @@ import io.zhile.research.intellij.ier.common.Resetter;
 
 public class ResetTimeHelper {
     public static final long RESET_PERIOD = 2160000000L; // 25 days
-    private static final String RESET_KEY = Constants.PLUGIN_PREFS_PREFIX + "." + Constants.IDE_NAME_LOWER + "." + Constants.IDE_HASH;
+    private static final String RESET_KEY = Constants.PLUGIN_PREFS_PREFIX + ".reset_time." + Constants.IDE_NAME + Constants.IDE_BASELINE_VERSION;
 
     public static long getLastResetTime() {
         return Prefs.getLong(RESET_KEY, 0L);

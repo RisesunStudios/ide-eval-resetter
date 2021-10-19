@@ -14,14 +14,14 @@ public class AppHelper {
         });
     }
 
-    public static String getProductCode() {
-        String productCode = Constants.IDE_NAME;
+    public static String getProductName() {
+        String productName = Constants.IDE_NAME;
 
-        if ("IDEA".equals(productCode)) {
-            return productCode.toLowerCase();
+        if ("IDEA".equals(productName)) {
+            return productName.toLowerCase();
         }
 
-        return productCode;
+        return productName;
     }
 
     public static BuildNumber getBuildNumber() {

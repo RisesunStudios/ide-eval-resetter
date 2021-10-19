@@ -1,6 +1,6 @@
 # Reset Your IDE Eval Information
 
-1. Download and install plugin from [Download Link](https://plugins.zhile.io/files/ide-eval-resetter-2.3.3-3d9348.zip).
+1. Download and install plugin from [Download Link](https://plugins.zhile.io/files/ide-eval-resetter-2.3.4-62e7c8.zip).
     * Alternative installation method: 
         * Add "Custom Plugin Repository": `https://plugins.zhile.io` manually (`Settings/Preferences` -> `Plugins`)
         * Search and install plugin: `IDE Eval Reset`

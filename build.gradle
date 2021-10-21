@@ -4,7 +4,7 @@ plugins {
 }
 
 group 'io.zhile.research.intellij'
-version '2.3.4'
+version '2.3.5'
 
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
@@ -29,6 +29,8 @@ intellij {
 
 patchPluginXml {
     changeNotes = """<pre>
+Release v2.3.4
+  1. fixed gitee issue: I4EVTS
 Release v2.3.4
   1. update the logic of auto reset option
 Release v2.3.3

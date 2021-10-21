@@ -45,7 +45,12 @@ public class ListenerConnector {
     }
 
     private static void callPluginInstallListenerMethod(String methodName) {    // reflection for old versions
-        String className = ListenerConnector.class.getPackage().getName() + ".PluginListener";
+        Class<?> klass = ReflectionHelper.getClass("com.intellij.ide.plugins.PluginStateListener");
+        if (null == klass) {
+            return;
+        }
+
+        String className = ListenerConnector.class.getPackage().getName() + ".PluginInstallListener";
         Method method = ReflectionHelper.getMethod(className, methodName);
         if (null == method) {
             return;
@@ -54,7 +59,7 @@ public class ListenerConnector {
         try {
             method.invoke(null);
         } catch (Exception e) {
-            e.printStackTrace();
+            // ignored
         }
     }
 }

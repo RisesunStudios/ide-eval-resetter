@@ -2,12 +2,9 @@ package io.zhile.research.intellij.ier.listener;
 
 import com.intellij.ide.plugins.DynamicPluginListener;
 import com.intellij.ide.plugins.IdeaPluginDescriptor;
-import com.intellij.ide.plugins.PluginStateListener;
-import com.intellij.ide.plugins.PluginStateManager;
 import com.intellij.openapi.actionSystem.ActionManager;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.DefaultActionGroup;
-import com.intellij.openapi.application.ApplicationManager;
 import io.zhile.research.intellij.ier.common.Resetter;
 import io.zhile.research.intellij.ier.helper.Constants;
 import io.zhile.research.intellij.ier.helper.NotificationHelper;
@@ -16,32 +13,7 @@ import io.zhile.research.intellij.ier.helper.ResetTimeHelper;
 import io.zhile.research.intellij.ier.tw.MainToolWindowFactory;
 import org.jetbrains.annotations.NotNull;
 
-public class PluginListener implements DynamicPluginListener, PluginStateListener {
-    private static final PluginStateListener stateListener = new PluginListener();
-
-    public static void setup() {
-        PluginStateManager.addStateListener(stateListener);
-    }
-
-    public static void remove() {
-        PluginStateManager.removeStateListener(stateListener);
-    }
-
-    @Override
-    public void install(@NotNull final IdeaPluginDescriptor descriptor) {
-        ApplicationManager.getApplication().invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                Resetter.addPluginLicense(descriptor);
-            }
-        });
-    }
-
-    @Override
-    public void uninstall(@NotNull IdeaPluginDescriptor descriptor) {
-
-    }
-
+public class PluginListener implements DynamicPluginListener {
     @Override
     public void pluginLoaded(@NotNull IdeaPluginDescriptor descriptor) {
         if (!PluginHelper.myself(descriptor)) {

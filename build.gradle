@@ -29,7 +29,7 @@ intellij {
 
 patchPluginXml {
     changeNotes = """<pre>
-Release v2.3.4
+Release v2.3.5
   1. fixed gitee issue: I4EVTS
 Release v2.3.4
   1. update the logic of auto reset option
